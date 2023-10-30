@@ -19,4 +19,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+});
