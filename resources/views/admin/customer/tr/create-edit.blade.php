@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('title', 'Yurtiçi Müşteriler Ekle')
+@section('title', 'Yurtiçi Müşteri Ekle')
 @section('content')
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Forms</div>
+        <div class="breadcrumb-title pe-3">Ekle</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
