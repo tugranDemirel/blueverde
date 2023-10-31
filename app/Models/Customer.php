@@ -12,23 +12,23 @@ class Customer extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', +
-        'current_type',+
-        'individual', +
-        'personal_type',+
-        'address',+
-        'country',+
-        'province',+
-        'district',+
-        'post_code',+
-        'phone',+
-        'mail',+
-        'authorized_person', +
-        'tax_authority',+
-        'identity_number',+
+        'name',
+        'current_type',
+        'individual',
+        'personal_type',
+        'address',
+        'country',
+        'province',
+        'district',
+        'post_code',
+        'phone',
+        'mail',
+        'authorized_person',
+        'tax_authority',
+        'identity_number',
         'eori_number',
-        'bank_info',+
-        'description',+
+        'bank_info',
+        'description',
         'file',
     ];
 
