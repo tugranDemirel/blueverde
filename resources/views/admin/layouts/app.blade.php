@@ -48,6 +48,8 @@
 
     <!--start content-->
     <main class="page-content">
+        @if(session()->has('success')) <x-admin.alert type="success">{{ session()->get('success') }}</x-admin.alert> @endif
+        @if(session()->has('error')) <x-admin.alert type="error">{{ session()->get('error') }}</x-admin.alert> @endif
         @yield('content')
     </main>
     <!--end page main-->

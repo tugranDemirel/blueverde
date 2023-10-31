@@ -43,20 +43,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($customers as $customer)
                                 <tr>
-                                    <td>{{ $customer->name }}</td>
-                                    <td>{{ $customer->country }}</td>
-                                    <td>{{ $customer->province }}</td>
-                                    <td>{{ $customer->district }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a href="{{ route('admin.tr_customer.edit', ['customer' => $customer, 'personal_type' => $customer->personal_type]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
-                                            <a href="" class="btn btn-danger"><i class="lni lni-trash"></i></a>
-                                        </div>
-                                    </td>
+                                    <td>Row 2 Data 2</td>
+                                    <td>Row 2 Data 2</td>
+                                    <td>Row 2 Data 2</td>
+                                    <td>Row 2 Data 2</td>
+                                    <td>Row 2 Data 2</td>
                                 </tr>
-                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -71,7 +64,7 @@
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable({
-
+                responsive: true
             });
         } );
     </script>
