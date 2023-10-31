@@ -27,7 +27,7 @@ class OtherCostumerController extends Controller
             abort(404);
         if($personal_type == CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value)
         {
-            return view('admin.customer.other.create-edit');
+            return view('admin.customer.other_customer.create-edit');
         }
         else
             abort(404);
@@ -54,7 +54,7 @@ class OtherCostumerController extends Controller
             $create = Customer::create($data);
 
             if ($create)
-                return redirect()->route('admin.tr_customer.index')->with('success', 'Müşteri başarıyla eklendi.');
+                return redirect()->route('admin.other_customer.index')->with('success', 'Müşteri başarıyla eklendi.');
             else
                 return redirect()->back()->with('error', 'Müşteri eklenirken bir hata oluştu.');
         }
@@ -98,9 +98,9 @@ class OtherCostumerController extends Controller
             $update = $customer->update($data);
 
             if ($update)
-                return redirect()->route('admin.tr_customer.index')->with('success', 'Müşteri başarıyla eklendi.');
+                return redirect()->route('admin.other_customer.index')->with('success', 'Müşteri başarıyla güncellendi.');
             else
-                return redirect()->back()->with('error', 'Müşteri eklenirken bir hata oluştu.');
+                return redirect()->back()->with('error', 'Müşteri güncellenirken bir hata oluştu.');
         }
         else
             abort(404);

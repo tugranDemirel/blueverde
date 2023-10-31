@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Yurtiçi Müşteriler')
+@section('title', 'Yurtdışı Müşteriler')
 @section('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
@@ -13,13 +13,13 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Yurtiçi Müşteriler</li>
+                    <li class="breadcrumb-item active" aria-current="page">Yurtdışı Müşteriler</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{ route('admin.other_customer.create', ['personal_type' => \App\Enum\Customer\CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value]) }}" class="btn btn-primary">Yurtiçi Müşteri Ekle</a>
+                <a href="{{ route('admin.other_customer.create', ['personal_type' => \App\Enum\Customer\CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value]) }}" class="btn btn-primary">Yurtdışı Müşteri Ekle</a>
             </div>
         </div>
     </div>

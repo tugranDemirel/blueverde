@@ -343,7 +343,7 @@
                                     @error('file')
                                     <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                @if(!is_null($customer->file))
+                                @if(isset($customer) && !is_null($customer->file))
                                 <div class="col-sm-4">
                                     <a href="{{ asset($customer->file) }}" class="btn btn-md btn-success" target="_blank"><i class="lni lni-download"></i> İndir/Görüntüle</a>
                                 </div>

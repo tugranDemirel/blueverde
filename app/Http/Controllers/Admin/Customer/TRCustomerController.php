@@ -97,9 +97,9 @@ class TRCustomerController extends Controller
             $update = $customer->update($data);
 
             if ($update)
-                return redirect()->route('admin.tr_customer.index')->with('success', 'Müşteri başarıyla eklendi.');
+                return redirect()->route('admin.tr_customer.index')->with('success', 'Müşteri başarıyla güncellendi.');
             else
-                return redirect()->back()->with('error', 'Müşteri eklenirken bir hata oluştu.');
+                return redirect()->back()->with('error', 'Müşteri güncellenirken bir hata oluştu.');
         }
         else
             abort(404);
