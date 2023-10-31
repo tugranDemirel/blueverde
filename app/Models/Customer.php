@@ -22,7 +22,7 @@ class Customer extends Model
         'district',
         'post_code',
         'phone',
-        'mail',
+        'email',
         'authorized_person',
         'tax_authority',
         'identity_number',

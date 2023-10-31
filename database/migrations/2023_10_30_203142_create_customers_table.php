@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('district')->nullable();
             $table->string('post_code')->nullable();
             $table->string('phone')->nullable();
-            $table->string('mail')->nullable();
+            $table->string('email')->nullable();
             $table->json('authorized_person')->nullable();
             $table->string('tax_authority')->nullable()->comment('vergi dairesi');
             $table->string('identity_number')->nullable()->comment('vergi ya da tc no');

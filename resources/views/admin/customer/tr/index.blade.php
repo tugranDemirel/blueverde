@@ -39,12 +39,14 @@
                                     <th>AD/UNVAN</th>
                                     <th>ÜLKE</th>
                                     <th>ŞEHİR</th>
+                                    <th>İLÇE</th>
                                     <th>İŞLEMLER</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($customers as $customer)
                                 <tr>
+                                    <td>{{ $customer->id }}</td>
                                     <td>{{ $customer->name }}</td>
                                     <td>{{ $customer->country }}</td>
                                     <td>{{ $customer->province }}</td>

@@ -17,7 +17,7 @@
         <div class="col-xl-12 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.tr_customer.store') }}" enctype="multipart/form-data" method="post">
+                    <form action="{{ isset($customer) ? route('admin.tr_customer.update', ['customer' => $customer]) : route('admin.tr_customer.store') }}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="border p-4 rounded">
                             <div class="card-title d-flex align-items-center">
@@ -103,9 +103,9 @@
                                     <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                             </div>
-                            <div class="row mt-3 authorizedPerson">
+
                                 @if(!isset($customer))
-                                <div class="row mb-3">
+                                    <div class="row mb-3 authorizedPerson">
                                     <label for="inputEnterYourName" class="col-sm-2 col-form-label">Yetkili Kişi</label>
                                     <div class="col-sm-2">
                                         <input type="text"
@@ -149,35 +149,69 @@
                                 </div>
                                 @else
                                     @php $j = 0; @endphp
-                                <div class="row mb-3 authorizedPersonItem">
+                                <div class="row mb-3 {{ $j != 0 ? 'authorizedPersonItem' : 'authorizedPerson' }}">
                                     @foreach($customer->authorized_person as $c)
                                     @if($j == 0)
 
+                                                <div class="row mb-3">
+                                                    <label for="inputEnterYourName" class="col-sm-2 col-form-label">Yetkili Kişi</label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text"
+                                                               class="form-control @error('authorized_person[name]') is-invalid @enderror"
+                                                               name="authorized_person[name][]"
+                                                               value="{{ $c['name'] ?? '' }}"
+                                                               id="inputEnterYourName" placeholder="Ad/Unvan">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <input type="text"
+                                                               class="form-control @error('authorized_person[phone]') is-invalid @enderror"
+                                                               name="authorized_person[phone][]"
+                                                               value="{{ $c['phone'] ?? '' }}"
+                                                               id="inputEnterYourName" placeholder="Telefon">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <input type="email"
+                                                               class="form-control @error('authorized_person[email]') is-invalid @enderror"
+                                                               name="authorized_person[email][]"
+                                                               value="{{ $c['email'] ?? '' }}"
+                                                               id="inputEnterYourName" placeholder="Mail">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <input type="text"
+                                                               class="form-control @error('authorized_person[gsm]') is-invalid @enderror"
+                                                               name="authorized_person[gsm][]"
+                                                               value="{{ $c['gsm'] ?? '' }}"
+                                                               id="inputEnterYourName" placeholder="GSM">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <a href="#" id="addAuthorizedPerson" class="btn btn-success">+</a>
+                                                    </div>
+                                                </div>
 
                                         @php $j++; @endphp
                                         @else
-                                            <label for="inputEnterYourName" class="col-sm-2 col-form-label">Yetkili Kişi</label>
-                                            <div class="col-sm-2">
-                                                <input type="text" class="form-control " name="authorized_person[name][]" value="{{ $c['name'] ?? '' }}"  id="inputEnterYourName" placeholder="Ad/Unvan">
+                                           <div class="row mb-3 authorizedPersonItem">
+                                               <label for="inputEnterYourName" class="col-sm-2 col-form-label">Yetkili Kişi</label>
+                                               <div class="col-sm-2">
+                                                   <input type="text" class="form-control " name="authorized_person[name][]" value="{{ $c['name'] ?? '' }}"  id="inputEnterYourName" placeholder="Ad/Unvan">
+                                               </div>
+                                               <div class="col-sm-2">
+                                                   <input type="text" class="form-control" name="authorized_person[phone][]" value="{{ $c['phone'] ?? '' }}"  id="inputEnterYourName" placeholder="Telefon">
+                                               </div>
+                                               <div class="col-sm-2">
+                                                   <input type="email" class="form-control " name="authorized_person[email][]" value="{{ $c['email'] ?? '' }}"  id="inputEnterYourName" placeholder="Mail">
+                                               </div>
+                                               <div class="col-sm-2">
+                                                   <input type="text" class="form-control" name="authorized_person[gsm][]" value="{{ $c['gsm'] ?? '' }}"  id="inputEnterYourName" placeholder="GSM">
+                                               </div>
+                                               <div class="col-sm-2">
+                                                   <a href="#" class="btn btn-danger removeAuthorizedPerson">-</a>
+                                           </div>
                                             </div>
-                                            <div class="col-sm-2">
-                                                <input type="text" class="form-control" name="authorized_person[phone][]" value="{{ $c['phone'] ?? '' }}"  id="inputEnterYourName" placeholder="Telefon">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <input type="email" class="form-control " name="authorized_person[email][]" value="{{ $c['email'] ?? '' }}"  id="inputEnterYourName" placeholder="Mail">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <input type="text" class="form-control" name="authorized_person[gsm][]" value="{{ $c['gsm'] ?? '' }}"  id="inputEnterYourName" placeholder="GSM">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <a href="#" class="btn btn-danger removeAuthorizedPerson">-</a>
-                                            </div>
-
                                         @endif
                                     @endforeach
                                 </div>
                                 @endif
-                            </div>
 
                             <div class="row mb-3 mt-3">
                                 <label for="inputEnterYourName" class="col-sm-2 col-form-label">Banka Bilgisi</label>
@@ -193,6 +227,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                             </div>
+
                             <div class="row mt-3 mb-3">
                                 <label for="inputEnterYourName" class="col-sm-2 col-form-label">Ülke</label>
                                 <div class="col-sm-2">
@@ -308,6 +343,11 @@
                                     @error('file')
                                     <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
+                                @if(!is_null($customer->file))
+                                <div class="col-sm-4">
+                                    <a href="{{ asset($customer->file) }}" class="btn btn-md btn-success" target="_blank"><i class="lni lni-download"></i> İndir/Görüntüle</a>
+                                </div>
+                                @endif
                             </div>
                             <div class="row">
                                 <label class="col-sm-2 col-form-label"></label>
@@ -329,7 +369,7 @@
             $('#addAuthorizedPerson').click(function () {
                 event.preventDefault()
                 let html = `
-                <div class="row mb-3 authorizedPersonItem">
+                <div class="row mb-3 mt-3 authorizedPersonItem">
                     <label for="inputEnterYourName" class="col-sm-2 col-form-label">Yetkili Kişi</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control " name="authorized_person[name][]" value=""  id="inputEnterYourName" placeholder="Ad/Unvan">
