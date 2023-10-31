@@ -26,8 +26,8 @@
                 <div class="menu-title">Müşteriler</div>
             </a>
             <ul>
-                <li> <a href="authentication-signin.html" target="_blank"><i class="bi bi-arrow-right-short"></i>Yurtiçi Müşteri</a>
-                <li> <a href="authentication-signin.html" target="_blank"><i class="bi bi-arrow-right-short"></i>Yurtdışı Müşteri</a>
+                <li> <a href="{{ route('admin.tr_customer.index') }}" ><i class="bi bi-arrow-right-short"></i>Yurtiçi Müşteri</a>
+                <li> <a href="{{ route('admin.tr_customer.index') }}" ><i class="bi bi-arrow-right-short"></i>Yurtdışı Müşteri</a>
                 </li>
             </ul>
         </li>

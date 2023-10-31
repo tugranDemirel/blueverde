@@ -29,7 +29,7 @@
     <link href="{{ asset('assets/admin/css/light-theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/admin/css/semi-dark.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/admin/css/header-colors.css') }}" rel="stylesheet" />
-
+    @yield('css')
     <title>@yield('title')</title>
 </head>
 
@@ -82,7 +82,7 @@
 <!--app-->
 <script src="{{ asset('assets/admin/js/app.js') }}"></script>
 <script src="{{ asset('assets/admin/js/index.js') }}"></script>
-
+@yield('js')
 </body>
 
 </html>
