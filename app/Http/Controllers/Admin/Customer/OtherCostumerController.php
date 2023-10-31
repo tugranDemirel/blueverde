@@ -8,25 +8,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerStoreRequest;
 use App\Http\Requests\Customer\CustomerUpdateRequest;
 use App\Models\Customer;
+use Illuminate\Http\Request;
 
-class TRCustomerController extends Controller
+class OtherCostumerController extends Controller
 {
-    private string $_fileFolder = 'customers/tr/';
+    private string $_fileFolder = 'customers/other/';
     public function index()
     {
-            $customers = Customer::where('personal_type', CustomerPersonalTypeEnum::DOMESTIC_CUSTOMER)
-                        ->select(['id', 'name', 'country', 'province', 'district', 'personal_type'])
-                        ->get();
-        return view('admin.customer.tr.index', compact('customers'));
+        $customers = Customer::where('personal_type', CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER)
+            ->select(['id', 'name', 'country', 'province', 'district', 'personal_type'])
+            ->get();
+        return view('admin.customer.other.index', compact('customers'));
     }
 
     public function create( $personal_type = null)
     {
         if (is_null($personal_type))
             abort(404);
-        if($personal_type == CustomerPersonalTypeEnum::DOMESTIC_CUSTOMER->value)
+        if($personal_type == CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value)
         {
-            return view('admin.customer.tr.create-edit');
+            return view('admin.customer.other.create-edit');
         }
         else
             abort(404);
@@ -34,7 +35,7 @@ class TRCustomerController extends Controller
     public function store(CustomerStoreRequest $request)
     {
         $data = $request->all();
-        if(!is_null($data['personal_type']) && $data['personal_type'] == CustomerPersonalTypeEnum::DOMESTIC_CUSTOMER->value)
+        if(!is_null($data['personal_type']) && $data['personal_type'] == CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value)
         {
             if ($request->has('file'))
                 $data['file'] = FileHelpers::upload($request->file('file'), $this->_fileFolder, $request->file('file')->getClientOriginalName());
@@ -65,9 +66,9 @@ class TRCustomerController extends Controller
     {
         if (is_null($personal_type))
             abort(404);
-        if($personal_type == CustomerPersonalTypeEnum::DOMESTIC_CUSTOMER->value)
+        if($personal_type == CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value)
         {
-            return view('admin.customer.tr.create-edit', compact('customer'));
+            return view('admin.customer.other.create-edit', compact('customer'));
         }
         else
             abort(404);
@@ -76,7 +77,7 @@ class TRCustomerController extends Controller
     public function update(CustomerUpdateRequest $request, Customer $customer)
     {
         $data = $request->all();
-        if(!is_null($data['personal_type']) && $data['personal_type'] == CustomerPersonalTypeEnum::DOMESTIC_CUSTOMER->value)
+        if(!is_null($data['personal_type']) && $data['personal_type'] == CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value)
         {
             if ($request->has('file')){
                 $data['file'] = FileHelpers::upload($request->file('file'), $this->_fileFolder, $request->file('file')->getClientOriginalName());
@@ -104,4 +105,5 @@ class TRCustomerController extends Controller
         else
             abort(404);
     }
+
 }

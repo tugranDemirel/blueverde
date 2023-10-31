@@ -8,7 +8,6 @@
 @section('content')
 
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Tables</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
@@ -20,7 +19,7 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{ route('admin.tr_customer.create', ['personal_type' => \App\Enum\Customer\CustomerPersonalTypeEnum::DOMESTIC_CUSTOMER->value]) }}" class="btn btn-primary">Yurtiçi Müşteri Ekle</a>
+                <a href="{{ route('admin.other_customer.create', ['personal_type' => \App\Enum\Customer\CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value]) }}" class="btn btn-primary">Yurtiçi Müşteri Ekle</a>
             </div>
         </div>
     </div>
@@ -39,17 +38,26 @@
                                     <th>AD/UNVAN</th>
                                     <th>ÜLKE</th>
                                     <th>ŞEHİR</th>
+                                    <th>İLÇE</th>
                                     <th>İŞLEMLER</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($customers as $customer)
                                 <tr>
-                                    <td>Row 2 Data 2</td>
-                                    <td>Row 2 Data 2</td>
-                                    <td>Row 2 Data 2</td>
-                                    <td>Row 2 Data 2</td>
-                                    <td>Row 2 Data 2</td>
+                                    <td>{{ $customer->id }}</td>
+                                    <td>{{ $customer->name }}</td>
+                                    <td>{{ $customer->country }}</td>
+                                    <td>{{ $customer->province }}</td>
+                                    <td>{{ $customer->district }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.other_customer.edit', ['customer' => $customer, 'personal_type' => $customer->personal_type]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
+                                            <a href="" class="btn btn-danger"><i class="lni lni-trash"></i></a>
+                                        </div>
+                                    </td>
                                 </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -64,7 +72,7 @@
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable({
-                responsive: true
+
             });
         } );
     </script>

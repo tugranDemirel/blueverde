@@ -30,4 +30,12 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         Route::get('/düzenle/{customer}/{personal_type}',[TRCustomerController::class, 'edit'])->name('edit');
         Route::post('/düzenle/{customer}/',[TRCustomerController::class, 'update'])->name('update');
     });
+
+    Route::as('other_customer.')->prefix('yurtdisi-musteriler')->group(function (){
+       Route::get('/',[TRCustomerController::class, 'index'])->name('index');
+       Route::get('/ekle/{personal_type}',[TRCustomerController::class, 'create'])->name('create');
+       Route::post('/ekle/',[TRCustomerController::class, 'store'])->name('store');
+        Route::get('/düzenle/{customer}/{personal_type}',[TRCustomerController::class, 'edit'])->name('edit');
+        Route::post('/düzenle/{customer}/',[TRCustomerController::class, 'update'])->name('update');
+    });
 });
