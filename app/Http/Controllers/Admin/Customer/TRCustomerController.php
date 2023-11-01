@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerStoreRequest;
 use App\Http\Requests\Customer\CustomerUpdateRequest;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Request;
 
 class TRCustomerController extends Controller
 {
@@ -103,5 +104,16 @@ class TRCustomerController extends Controller
         }
         else
             abort(404);
+    }
+
+    public function destroy(Request $request, Customer $customer, $personal_type = null)
+    {
+        if ($customer->delete())
+        {
+            FileHelpers::deleteFile($customer->file);
+            return response()->json(['success' => true, 'message' => 'Müşteri başarıyla silindi.']);
+        }
+        else
+            return response()->json(['success' => false, 'message' => 'Müşteri silinirken bir hata oluştu.']);
     }
 }

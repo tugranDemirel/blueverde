@@ -53,7 +53,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('admin.tr_customer.edit', ['customer' => $customer, 'personal_type' => $customer->personal_type]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
-                                            <a href="" class="btn btn-danger"><i class="lni lni-trash"></i></a>
+                                            <button type="button" class="btn btn-danger removeCustomer" data-url="{{ route('admin.tr_customer.destroy', ['customer' => $customer, 'personal_type' => $customer->personal_type]) }}"><i class="lni lni-trash"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -75,5 +75,38 @@
 
             });
         } );
+    </script>
+    <script>
+        $(document).ready(function (){
+            $('.removeCustomer').click(function () {
+                let url = $(this).data('url')
+
+                let id = url.split('/')[6]
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function (response){
+                        if (response.success === true){
+                            alert(response.message)
+                            window.location.reload()
+                        }
+
+                        if (response.success === false){
+                            alert(response.message)
+                            window.location.reload()
+                        }
+
+                    },
+                    error: function (response){
+                        alert(response.message)
+                    }
+                })
+
+            })
+        })
     </script>
 @endsection

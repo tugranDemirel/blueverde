@@ -27,7 +27,7 @@ class OtherCostumerController extends Controller
             abort(404);
         if($personal_type == CustomerPersonalTypeEnum::OVERSEAS_CUSTOMER->value)
         {
-            return view('admin.customer.other_customer.create-edit');
+            return view('admin.customer.other.create-edit');
         }
         else
             abort(404);
@@ -106,4 +106,14 @@ class OtherCostumerController extends Controller
             abort(404);
     }
 
+    public function destroy(Customer $customer)
+    {
+            if ($customer->delete())
+            {
+                FileHelpers::deleteFile($customer->file);
+                return response()->json(['success' => true, 'message' => 'Müşteri başarıyla silindi.']);
+            }
+            else
+                return response()->json(['success' => false, 'message' => 'Müşteri silinirken bir hata oluştu.']);
+    }
 }
