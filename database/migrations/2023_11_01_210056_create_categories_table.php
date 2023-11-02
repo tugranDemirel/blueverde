@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('parent_id')->default(0);
+
             $table->string('name');
-            $table
-                ->foreignId('parent_id')
-                ->nullable()
-                ->constrained('categories', 'id')
-                ->cascadeOnDelete();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
+            $table->tinyInteger('type')->default(0)->comment('0 yurtiçi 1 yurtdışı');
             $table->boolean('is_active')->default(true)->nullable();
             $table->boolean('is_featured')->default(false)->nullable();
             $table->integer('order')->default(0);
