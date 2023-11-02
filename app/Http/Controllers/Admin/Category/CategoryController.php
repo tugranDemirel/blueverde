@@ -44,10 +44,8 @@ class CategoryController extends Controller
         }
         if ($request->filled('tag'))
         {
-            if ($request->tag == 'all')
+            if ($request->tag != 'all')
             {
-                $categories->where('tag_id', '!=', null);
-            } else {
                 $categories->where('tag_id', $request->tag);
             }
         }
