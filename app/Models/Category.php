@@ -20,6 +20,7 @@ class Category extends Model
         'is_featured',
         'order',
         'type',
+        'tag_id'
     ];
 
     public function parent()
@@ -30,6 +31,11 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function categoryTag()
+    {
+        return $this->belongsTo(CategoryTag::class, 'tag_id');
     }
 
     protected $casts = [

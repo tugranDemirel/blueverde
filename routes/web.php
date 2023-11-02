@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Customer\TRCustomerController;
+use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Category\CategoryTagController;
 use App\Http\Controllers\Admin\Customer\OtherCostumerController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\Customer\TRCustomerController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,18 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
        Route::get('/', [CategoryController::class, 'index'])->name('index');
        Route::get('/ekle', [CategoryController::class, 'create'])->name('create');
        Route::post('/ekle', [CategoryController::class, 'store'])->name('store');
+       Route::get('/düzenle/{category}', [CategoryController::class, 'edit'])->name('edit');
+       Route::post('/düzenle/{category}', [CategoryController::class, 'update'])->name('update');
+       Route::post('/sil/{category}', [CategoryController::class, 'destroy'])->name('destroy');
+
        Route::get('/altkategoriler', [CategoryController::class, 'getCategory'])->name('getCategory');
+    });
+    Route::as('category.tag.')->prefix('kategoriler-etiketleri')->group(function (){
+       Route::get('/', [CategoryTagController::class, 'index'])->name('index');
+       Route::get('/ekle', [CategoryTagController::class, 'create'])->name('create');
+       Route::post('/ekle', [CategoryTagController::class, 'store'])->name('store');
+       Route::get('/düzenle/{categoryTag}', [CategoryTagController::class, 'edit'])->name('edit');
+       Route::post('/düzenle/{categoryTag}', [CategoryTagController::class, 'update'])->name('update');
+       Route::post('/sil/{categoryTag}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 });

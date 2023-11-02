@@ -32,19 +32,21 @@
             </ul>
         </li>
         <li class="menu-label">Kategori Yönetimi</li>
+
+        <li class="menu-label">Müşteri Yönetimi</li>
         <li>
             <a class="has-arrow" href="javascript:;">
                 <div class="parent-icon"><i class="bi bi-person-check"></i>
                 </div>
-                <div class="menu-title">Kategoriler</div>
+                <div class="menu-title">Müşteriler</div>
             </a>
             <ul>
-                <li> <a href="{{ route('admin.category.create') }}" ><i class="bi bi-arrow-right-short"></i>Kategori Ekle</a>
-                <li> <a href="{{ route('admin.other_customer.index') }}" ><i class="bi bi-arrow-right-short"></i>Yurtiçi Kategori</a>
-                <li> <a href="{{ route('admin.other_customer.index') }}" ><i class="bi bi-arrow-right-short"></i>Yurtdışı Kategori</a>
+                <li> <a href="{{ route('admin.category.index') }}" ><i class="bi bi-arrow-right-short"></i>Kategoriler</a>
+                <li> <a href="{{ route('admin.category.tag.index') }}" ><i class="bi bi-arrow-right-short"></i>Kategori Etiketleri</a>
                 </li>
             </ul>
         </li>
+
     </ul>
     <!--end navigation-->
 </aside>
