@@ -23,6 +23,12 @@ class Category extends Model
         'tag_id'
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_featured' => 'boolean',
+        'type' => CategoryTypeEnum::class
+    ];
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
@@ -38,10 +44,11 @@ class Category extends Model
         return $this->belongsTo(CategoryTag::class, 'tag_id');
     }
 
-    protected $casts = [
-        'is_active' => 'boolean',
-        'is_featured' => 'boolean',
-        'type' => CategoryTypeEnum::class
-    ];
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+
 
 }

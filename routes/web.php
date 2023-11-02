@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Category\CategoryTagController;
 use App\Http\Controllers\Admin\Customer\OtherCostumerController;
 use App\Http\Controllers\Admin\Customer\TRCustomerController;
+use App\Http\Controllers\Admin\Product\ProductTagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +54,7 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
 
        Route::get('/altkategoriler', [CategoryController::class, 'getCategory'])->name('getCategory');
     });
+
     Route::as('category.tag.')->prefix('kategoriler-etiketleri')->group(function (){
        Route::get('/', [CategoryTagController::class, 'index'])->name('index');
        Route::get('/ekle', [CategoryTagController::class, 'create'])->name('create');
@@ -61,4 +63,9 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
        Route::post('/düzenle/{categoryTag}', [CategoryTagController::class, 'update'])->name('update');
        Route::post('/sil/{categoryTag}', [CategoryController::class, 'destroy'])->name('destroy');
     });
+
+    Route::resource('urun-etiketleri', ProductTagController::class)
+        ->except(['show'])
+        ->names('product.tag')
+        ->parameters(['urun-etiketleri' => 'productTag']);
 });
