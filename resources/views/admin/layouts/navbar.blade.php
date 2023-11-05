@@ -54,7 +54,7 @@
                 <div class="menu-title">Ürün İşlemleri</div>
             </a>
             <ul>
-                <li> <a href="{{ route('admin.category.index') }}" ><i class="bi bi-arrow-right-short"></i>Ürünler</a>
+                <li> <a href="{{ route('admin.product.index') }}" ><i class="bi bi-arrow-right-short"></i>Ürünler</a>
                 <li> <a href="{{ route('admin.product.tag.index') }}" ><i class="bi bi-arrow-right-short"></i>Ürün Etiketleri</a>
                 </li>
             </ul>

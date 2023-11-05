@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Category\CategoryTagController;
 use App\Http\Controllers\Admin\Customer\OtherCostumerController;
 use App\Http\Controllers\Admin\Customer\TRCustomerController;
 use App\Http\Controllers\Admin\Product\ProductTagController;
+use App\Http\Controllers\Admin\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,4 +69,11 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         ->except(['show'])
         ->names('product.tag')
         ->parameters(['urun-etiketleri' => 'productTag']);
+
+    Route::resource('urunler', ProductController::class)
+        ->except(['show'])
+        ->names('product')
+        ->parameters(['urunler' => 'product']);
+
+    Route::post('upload', [\App\Http\Controllers\HomeController::class, 'upload'])->name('upload');
 });
