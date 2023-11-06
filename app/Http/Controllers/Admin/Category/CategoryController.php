@@ -14,11 +14,16 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $categories = Category::query();
-
+        if($request->filled('category'))
+        {
+            $categories->where('parent_id', $request->category);
+        }
         if ($request->filled('type'))
         {
             switch ($request->type)
             {
+                case 'all':
+                    break;
                 case 'domestic':
                     $categories->where('type', CategoryTypeEnum::TR_CATEGORY);
                     break;
@@ -31,6 +36,8 @@ class CategoryController extends Controller
         {
             switch ($request->parent)
             {
+                case 'all':
+                    break;
                 case 'main':
                     $categories->where('parent_id', 0);
                     break;
@@ -49,7 +56,7 @@ class CategoryController extends Controller
                 $categories->where('tag_id', $request->tag);
             }
         }
-        $categories = $categories->get();
+        $categories = $categories->orderBy('parent_id', 'asc')->get();
         $categoryTags = CategoryTag::all();
         return view('admin.category.index', compact('categories', 'categoryTags'));
     }
@@ -65,7 +72,8 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required|unique:categories,name',
             'parent_id' => 'nullable|exists:categories,id',
-            'type' => 'required|in:1,2'
+            'type' => 'required|in:1,2',
+            'tag_id' => 'required|in:1,2'
         ], [
             'name.required' => 'Kategori adı alanı zorunludur.',
             'name.unique' => 'Bu kategori adı daha önce kullanılmıştır.',
@@ -99,6 +107,7 @@ class CategoryController extends Controller
         $data = $request->validate([
             'parent_id' => 'nullable|exists:categories,id',
             'type' => 'required|in:1,2',
+            'tag_id' => 'required|in:1,2',
             'name' => 'required|unique:categories,name,' . $category->id . ',id',
         ], [
             'name.required' => 'Kategori adı alanı zorunludur.',
@@ -152,7 +161,7 @@ class CategoryController extends Controller
         {
             $categories->where('tag_id', $type['tag_id']);
         }
-        $categories = $categories->where('type', $type)->get();
+        $categories = $categories->where('type', $type['type'])->get();
         if ($categories->count() == 0) {
             return response()->json(['status' => false, 'message' => 'Alt kategori bulunamadı.']);
         }
