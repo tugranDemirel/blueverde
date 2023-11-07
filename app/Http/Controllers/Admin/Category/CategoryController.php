@@ -18,6 +18,10 @@ class CategoryController extends Controller
         {
             $categories->where('parent_id', $request->category);
         }
+        if(!$request->filled('category'))
+        {
+            $categories->where('parent_id', 0);
+        }
         if ($request->filled('type'))
         {
             switch ($request->type)

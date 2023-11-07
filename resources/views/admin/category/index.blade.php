@@ -80,7 +80,11 @@
                         <tr>
 
                             <td><span>{{ $category->id }}</span></td>
-                            <td><span>{{ $category->name }}</span></td>
+                            <td>
+                                <span>
+                                    <a href="{{ route('admin.category.index', ['category' => $category->id]) }}">{{ $category->name }}</a>
+                                </span>
+                            </td>
                             <td>
                                 @if($category->type == \App\Enum\Category\CategoryTypeEnum::TR_CATEGORY )
                                     <span class="badge rounded-pill alert-success">YURTİÇİ</span>

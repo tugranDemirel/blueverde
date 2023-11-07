@@ -183,31 +183,35 @@
                 {
                     let type = $('#type').val()
                     let tag = $('#tag').val()
-                    $.ajax({
-                        url: '{{route('admin.category.getCategory')}}',
-                        type: 'GET',
-                        data: {
-                            type: type,
-                            tag_id: tag
-                        },
-                        success: function (response){
-                            if (response.status === false)
-                            {
-                                alert(response.message);
-                                $('#categorySelect').val('main');
-                                $('#getCategory').css('visibility', 'hidden');
-                                return false;
+                    if($('#categorySelect').val() == 'down')
+                    {
+
+                        $.ajax({
+                            url: '{{route('admin.category.getCategory')}}',
+                            type: 'GET',
+                            data: {
+                                type: type,
+                                tag_id: tag
+                            },
+                            success: function (response){
+                                if (response.status === false)
+                                {
+                                    alert(response.message);
+                                    $('#categorySelect').val('main');
+                                    $('#getCategory').css('visibility', 'hidden');
+                                    return false;
+                                }
+                                $('#getCategory').css('visibility', 'visible');
+                                $('#subCategories').empty();
+                                $.each(response, function (key, value){
+                                    $('#subCategories').append('<option value="'+value.id+'">'+value.name+'</option>');
+                                })
+                            },
+                            error: function (error){
+                                console.log(error);
                             }
-                            $('#getCategory').css('visibility', 'visible');
-                            $('#subCategories').empty();
-                            $.each(response, function (key, value){
-                                $('#subCategories').append('<option value="'+value.id+'">'+value.name+'</option>');
-                            })
-                        },
-                        error: function (error){
-                            console.log(error);
-                        }
-                    })
+                        })
+                    }
                 }
             });
         })
