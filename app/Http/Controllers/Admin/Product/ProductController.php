@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Models\Category;
+use App\Models\CategoryTag;
 use App\Models\Product;
 use App\Models\ProductTag;
 use Illuminate\Http\Request;
@@ -26,9 +27,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categoryTags = CategoryTag::all();
         $productTags = ProductTag::all();
-        return view('admin.products.create', compact('categories', 'productTags'));
+        return view('admin.products.create', compact('categoryTags', 'productTags'));
     }
 
     /**
@@ -53,8 +54,10 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
+
+        $categoryTags = CategoryTag::all();
         $productTags = ProductTag::all();
-        return view('admin.products.edit', compact('product', 'categories', 'productTags'));
+        return view('admin.products.edit', compact('product', 'categories', 'categoryTags', 'productTags'));
     }
 
     /**

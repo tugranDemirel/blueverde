@@ -171,4 +171,25 @@ class CategoryController extends Controller
         }
         return response()->json($categories);
     }
+
+    public function searchCategories(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $categories = Category::where('name', 'like', '%'.$keyword.'%')->get();
+
+        // Blade şablonunu kullanarak seçenekleri döndürün
+
+        return view('admin.products.subcategories', compact('categories'));
+    }
+
+    public function getCategoryId(Request $request)
+    {
+        if ($request->filled('tag_id'))
+        {
+            $categories = Category::where('tag_id', $request->tag_id)->get();
+            return response()->json($categories);
+        }
+        return response()->json(['status' => false, 'message' => 'Kategori bulunamadı.']);
+    }
 }

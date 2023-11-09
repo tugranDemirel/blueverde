@@ -54,6 +54,9 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
        Route::post('/sil/{category}', [CategoryController::class, 'destroy'])->name('destroy');
 
        Route::get('/altkategoriler', [CategoryController::class, 'getCategory'])->name('getCategory');
+
+        Route::get('/search-categories', [CategoryController::class, 'searchCategories'])->name('searchCategories');
+        Route::get('/search-categories-id', [CategoryController::class, 'getCategoryId'])->name('getCategoryId');
     });
 
     Route::as('category.tag.')->prefix('kategoriler-etiketleri')->group(function (){

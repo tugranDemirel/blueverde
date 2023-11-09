@@ -34,7 +34,7 @@
 
                             @if($productTags->count() > 0)
                             <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Etiket</label>
+                                <label class="col-sm-4 col-form-label">Ürün Etiket</label>
                                 <div class="col-sm-6">
                                 <select class="form-select @error('product_tag_id') is-invalid @enderror" name="product_tag_id">
                                     <option selected>Etiket Seçiniz</option>
@@ -46,10 +46,33 @@
                             </div>
                             @else
                                 <div class="row  mt-3">
-                                    <label class="col-sm-4 col-form-label">Kategori</label>
+                                    <label class="col-sm-4 col-form-label">Ürün Etiketi</label>
                                     <div class="col-sm-6">
                                         <div class="alert alert-warning">
                                             Lütfen <strong>Ürün Etiketi</strong> Ekleyiniz.
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            @if($categoryTags->count() > 0)
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Kategori Etiketi</label>
+                                    <div class="col-sm-6">
+                                        <select name="" id="categoryTag" class="form-control">
+                                            <option value="">Kategori Etiketi Seçiniz</option>
+                                            @foreach($categoryTags as $tag)
+                                                <option value="{{ $tag->id }}" @if($tag->id == $product->category->categoryTag->id) selected @endif>{{ $tag->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                            @else
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Kategori Etiketi</label>
+                                    <div class="col-sm-6">
+                                        <div class="alert alert-warning">
+                                            Lütfen <strong>Kategori Etiketi</strong> Ekleyiniz.
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +81,7 @@
                             <div class="row  mt-3">
                                 <label class="col-sm-4 col-form-label">Kategori</label>
                                 <div class="col-sm-6">
-                                    <select class="form-select @error('category_id') is-invalid @enderror" name="category_id">
+                                    <select class="form-select @error('category_id') is-invalid @enderror" id="category-results" name="category_id">
                                         <option selected>Kategori Seçiniz</option>
                                         @foreach($categories as $category)
                                             <option value="{{ $category->id }}"  @if($product->category_id == $category->id) selected @endif>{{ $category->name }}</option>
@@ -114,6 +137,30 @@
     </div>
 @endsection
 @section('js')
+
+    <script>
+
+        $(document).ready(function() {
+            $('#categoryTag').change(function () {
+                let id = $(this).val();
+                $.ajax({
+                    url: '{{ route('admin.category.getCategoryId') }}', // AJAX isteğini yönlendireceğiniz route'unuzu belirtin
+                    method: 'GET',
+                    data: { tag_id: id },
+                    success: function (response) {
+                        $('#category-results').empty();
+                        $.each(response, function (key, value) {
+                            $('#category-results').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            })
+        });
+
+    </script>
     <script>
         // Replace the <textarea id="editor1"> with a CKEditor 4
         // instance, using default configuration.
