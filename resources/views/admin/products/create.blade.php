@@ -23,122 +23,225 @@
         <div class="col-xl-8 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.product.store') }}" method="post">
+                    <form action="{{ route('admin.product.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="border p-4 rounded">
-                            <div class="card-title d-flex align-items-center">
-                                <h5 class="mb-0">Ürün Ekle</h5>
-                            </div>
-                            <hr>
+                        <ul class="nav nav-tabs nav-primary" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon"><i class="bx bx-home font-18 me-1"></i>
+                                        </div>
+                                        <div class="tab-title">Genel Özellikler</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon"><i class="bx bx-user-pin font-18 me-1"></i>
+                                        </div>
+                                        <div class="tab-title">Resim Seçimi</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab" aria-selected="false">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon"><i class="bx bx-text font-18 me-1"></i>
+                                        </div>
+                                        <div class="tab-title">SEO Ayarları</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content py-3">
+                            <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
 
-                            @if($productTags->count() > 0)
-                            <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Etiket</label>
-                                <div class="col-sm-6">
-                                <select class="form-select @error('product_tag_id') is-invalid @enderror" name="product_tag_id">
-                                    <option selected>Ürün Etiketi Seçiniz</option>
-                                    @foreach($productTags as $tag)
-                                        <option value="{{ $tag->id }}" @if(old('product_tag_id') == $tag->id) selected @endif>{{ $tag->name }}</option>
-                                    @endforeach
-                                </select>
-                                </div>
-                            </div>
-                            @else
+                                @if($productTags->count() > 0)
+                                    <div class="row  mt-3">
+                                        <label class="col-sm-4 col-form-label">Etiket</label>
+                                        <div class="col-sm-6">
+                                            <select class="form-select @error('product_tag_id') is-invalid @enderror" name="product_tag_id">
+                                                <option selected>Ürün Etiketi Seçiniz</option>
+                                                @foreach($productTags as $tag)
+                                                    <option value="{{ $tag->id }}" @if(old('product_tag_id') == $tag->id) selected @endif>{{ $tag->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="row  mt-3">
+                                        <label class="col-sm-4 col-form-label">Etiket</label>
+                                        <div class="col-sm-6">
+                                            <div class="alert alert-warning">
+                                                Lütfen <strong>Ürün Etiketi</strong> Ekleyiniz.
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if($categoryTags->count() > 0)
+                                    <div class="row  mt-3">
+                                        <label class="col-sm-4 col-form-label">Kategori Etiketi</label>
+                                        <div class="col-sm-6">
+                                            <select name="" id="categoryTag" class="form-control">
+                                                <option value="" selected>Kategori Etiketi Seçiniz</option>
+                                                @foreach($categoryTags as $tag)
+                                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row  mt-3" id="category-result" style="display: none;">
+                                        <label class="col-sm-4 col-form-label">Kategoriler</label>
+                                        <div class="col-sm-6">
+                                            <select name="category_id" id="category-results" class="form-control">
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                @else
+                                    <div class="row  mt-3">
+                                        <label class="col-sm-4 col-form-label">Kategori Etiketi</label>
+                                        <div class="col-sm-6">
+                                            <div class="alert alert-warning">
+                                                Lütfen <strong>Kategori Etiketi</strong> Ekleyiniz.
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                {{--   @endif@if($categories->count() > 0)
+                                   <div class="row  mt-3">
+                                       <label class="col-sm-4 col-form-label">Kategori</label>
+                                       <div class="col-sm-6">
+                                           <select name="category" id="category" class="form-control">
+                                               <option value="">Ana Kategori</option>
+                                               @foreach($categories as $category)
+                                                   <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                   @if($category->children)
+                                                       @include('admin.products.subcategories', ['subcategories' => $category->children, 'prefix' => '-'])
+                                                   @endif
+                                               @endforeach
+                                           </select>
+
+                                       </div>
+                                   </div>
+                                   @else
+                                       <div class="row  mt-3">
+                                           <label class="col-sm-4 col-form-label">Kategori</label>
+                                           <div class="col-sm-6">
+                                               <div class="alert alert-warning">
+                                                   Lütfen <strong>Kategori</strong> Ekleyiniz.
+                                               </div>
+                                           </div>
+                                       </div>
+                                   @endif--}}
                                 <div class="row  mt-3">
-                                    <label class="col-sm-4 col-form-label">Etiket</label>
+                                    <label class="col-sm-4 col-form-label">Ürün Adı</label>
                                     <div class="col-sm-6">
-                                        <div class="alert alert-warning">
-                                            Lütfen <strong>Ürün Etiketi</strong> Ekleyiniz.
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" name="name" placeholder="Ürün Adı Giriniz">
+                                        @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün Kodu</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}" name="code" placeholder="Ürün Kodu Giriniz">
+                                        @error('code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün Ana Resmi</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}" name="image" >
+                                        @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün Fiyatı</label>
+                                    <div class="col-sm-3">
+                                        <input type="number" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" name="price" placeholder="Ürün Fiyatı Giriniz">
+                                        @error('price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <select name="system_currency_id" id="" class="form-select">
+                                                @foreach($currencies as $currency)
+                                                    <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('system_currency_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                            @if($categoryTags->count() > 0)
-                            <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Kategori Etiketi</label>
-                                <div class="col-sm-6">
-                                    <select name="" id="categoryTag" class="form-control">
-                                        <option value="" selected>Kategori Etiketi Seçiniz</option>
-                                        @foreach($categoryTags as $tag)
-                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row  mt-3" id="category-result" style="display: none;">
-                                <label class="col-sm-4 col-form-label">Kategoriler</label>
-                                <div class="col-sm-6">
-                                    <select name="category_id" id="category-results" class="form-control">
-                                    </select>
-
-                                </div>
-                            </div>
-
-                            @else
                                 <div class="row  mt-3">
-                                    <label class="col-sm-4 col-form-label">Kategori Etiketi</label>
-                                    <div class="col-sm-6">
-                                        <div class="alert alert-warning">
-                                            Lütfen <strong>Kategori Etiketi</strong> Ekleyiniz.
-                                        </div>
+                                    <div class="col-sm-12 ">
+                                        <label for="">Ürün Açıklaması</label>
+                                        <textarea class="form-control ckeditor1 @error('description') is-invalid @enderror" name="description" rows="4" placeholder="Ürün Açıklaması Giriniz">{{ old('description') }}</textarea>
+
+                                        @error('system_currency_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
-                            @endif
-                         {{--   @endif@if($categories->count() > 0)
-                            <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Kategori</label>
-                                <div class="col-sm-6">
-                                    <select name="category" id="category" class="form-control">
-                                        <option value="">Ana Kategori</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @if($category->children)
-                                                @include('admin.products.subcategories', ['subcategories' => $category->children, 'prefix' => '-'])
-                                            @endif
-                                        @endforeach
-                                    </select>
-
-                                </div>
                             </div>
-                            @else
-                                <div class="row  mt-3">
-                                    <label class="col-sm-4 col-form-label">Kategori</label>
-                                    <div class="col-sm-6">
-                                        <div class="alert alert-warning">
-                                            Lütfen <strong>Kategori</strong> Ekleyiniz.
+                            <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+
+                                <div class="row  mt-3" id="images">
+
+                                    <div class="col-sm-1">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-success addProduct" data-url=""><i class="lni lni-circle-plus"></i></button>
                                         </div>
                                     </div>
-                                </div>
-                            @endif--}}
-                            <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Ürün Adı</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" name="name" placeholder="Ürün Adı Giriniz">
-                                </div>
-                            </div>
-                            <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Ürün Kodu</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}" name="code" placeholder="Ürün Kodu Giriniz">
-                                </div>
-                            </div>
-                            <div class="row  mt-3">
-                                <label class="col-sm-4 col-form-label">Ürün Fiyatı</label>
-                                <div class="col-sm-6">
-                                    <input type="number" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" name="price" placeholder="Ürün Fiyatı Giriniz">
+                                    <div class="row mt-3">
+                                        <label class="col-sm-2 col-form-label">Ürün Alt Resim</label>
+                                        <div class="col-sm-4">
+                                            <input type="file" class="form-control @error('images[]') is-invalid @enderror" value="{{ old('images[]') }}" name="images[]" placeholder="Ürün Fiyatı Giriniz">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <img src="" alt="" class="img-fluid" width="50">
+                                        </div>
+                                        {{--<div class="col-sm-1">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-danger removeProduct" data-url=""><i class="lni lni-trash"></i></button>
+                                            </div>
+                                        </div>--}}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row  mt-3">
-                                <div class="col-sm-12 ">
-                                    <label for="">Ürün Açıklaması</label>
-                                    <textarea class="form-control ckeditor1 @error('description') is-invalid @enderror" name="description" rows="4" placeholder="Ürün Açıklaması Giriniz">{{ old('description') }}</textarea>
+                            <div class="tab-pane fade" id="primarycontact" role="tabpanel">
+
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün SEO Açıklaması</label>
+                                    <div class="col-sm-6 ">
+                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" name="meta_description" rows="4" placeholder="Ürün SEO Açıklaması Giriniz">{{ old('meta_description') }}</textarea>
+                                    </div>
                                 </div>
-                            </div>
+
                             <div class="row mt-3">
-                                <label class="col-sm-2 col-form-label"></label>
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary px-5">Kaydet</button>
+                                <label class="col-sm-4 col-form-label">Ürün SEO Anahtar Kelimeleri</label>
+                                <div class="col-sm-6 ">
+                                    <input type="text" class="form-control @error('meta_keywords') is-invalid @enderror" name="meta_keywords" value="{{ old('meta_keywords') }}" placeholder="Ürün SEO Anahtar Kelimeleri Giriniz">
+                                    <span>Kelimeleri <strong>,</strong> ile ayırınız. </span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary px-5">Kaydet</button>
                             </div>
                         </div>
                     </form>
@@ -150,7 +253,37 @@
 
 @section('js')
     <script>
+        $(document).ready(function () {
+            $('.addProduct').click(function () {
+                if($('#images .imagesItem').length >= 4) {
+                    alert('En fazla 5 adet resim ekleyebilirsiniz.');
+                    return false;
+                }
+                html = `
+                <div class="row mt-3 imagesItem">
+                    <label class="col-sm-2 col-form-label">Ürün Alt Resim</label>
+                    <div class="col-sm-4">
+                        <input type="file" class="form-control @error('images[]') is-invalid @enderror" value="{{ old('images[]') }}" name="images[]" placeholder="Ürün Fiyatı Giriniz">
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="" alt="" class="img-fluid" width="50">
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger removeProduct" data-url=""><i class="lni lni-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                `
+                $('#images').append(html);
+            })
+        })
+        $('#images').on('click','.removeProduct', function () {
+            $(this).closest('.imagesItem').remove();
+        })
 
+    </script>
+    <script>
             $(document).ready(function() {
                 $('#categoryTag').change(function () {
                     let id = $(this).val();
@@ -171,7 +304,6 @@
                     });
                 })
             });
-
     </script>
     <script>
         // Replace the <textarea id="editor1"> with a CKEditor 4

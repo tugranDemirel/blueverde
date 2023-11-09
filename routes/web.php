@@ -73,6 +73,7 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         ->names('product.tag')
         ->parameters(['urun-etiketleri' => 'productTag']);
 
+    Route::post('delete-single-image', [ProductController::class, 'deleteSingleImage'])->name('product.deleteImage');
     Route::resource('urunler', ProductController::class)
         ->except(['show'])
         ->names('product')

@@ -28,6 +28,11 @@ class ProductUpdateRequest extends FormRequest
             'code' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'images' => 'nullable|array|max:5',
+            'meta_description' => 'required|string|max:160',
+            'meta_keywords' => 'required|string|max:160',
+            'system_currency_id' => 'required|exists:system_currencies,id',
         ];
     }
 
@@ -48,6 +53,17 @@ class ProductUpdateRequest extends FormRequest
             'description.string' => 'Ürün açıklaması alanı metin tipinde olmalıdır.',
             'price.required' => 'Ürün fiyatı alanı zorunludur.',
             'price.numeric' => 'Ürün fiyatı alanı sayı tipinde olmalıdır.',
+            'image.image' => 'Ürün resmi alanı resim tipinde olmalıdır.',
+            'image.mimes' => 'Ürün resmi alanı jpg, jpeg, png tipinde olmalıdır.',
+            'image.max' => 'Ürün resmi alanı en fazla 2048 KB olmalıdır.',
+            'images.array' => 'Ürün resimleri alanı dizi tipinde olmalıdır.',
+            'images.max' => 'Ürün resimleri alanı en fazla 5 adet olmalıdır.',
+            'meta_description.string' => 'Meta açıklama alanı metin tipinde olmalıdır.',
+            'meta_description.max' => 'Meta açıklama alanı en fazla 160 karakter olmalıdır.',
+            'meta_keywords.string' => 'Meta anahtar kelimeler alanı metin tipinde olmalıdır.',
+            'meta_keywords.max' => 'Meta anahtar kelimeler alanı en fazla 160 karakter olmalıdır.',
+            'system_currency_id.required' => 'Sistem para birimi alanı zorunludur.',
+            'system_currency_id.exists' => 'Sistem para birimi alanı geçerli bir sistem para birimi olmalıdır.',
         ];
     }
 }

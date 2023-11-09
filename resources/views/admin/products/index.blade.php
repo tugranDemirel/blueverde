@@ -3,7 +3,6 @@
 @section('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 @endsection
 @section('content')
 
@@ -33,32 +32,39 @@
                         <div class="col-sm-12">
                             <table id="myTable" class="display" >
                                 <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>ÜRÜN ADI</th>
-                                    <th>ÜRÜN KATEGORİ</th>
-                                    <th>ÜRÜN ETİKET</th>
-                                    <th>ÜRÜN KODU</th>
-                                    <th>FİYAT</th>
-                                    <th>İŞLEMLER</th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ÜRÜN GÖRSEL</th>
+                                        <th>ÜRÜN ADI</th>
+                                        <th>ÜRÜN KATEGORİ</th>
+                                        <th>ÜRÜN ETİKET</th>
+                                        <th>ÜRÜN KODU</th>
+                                        <th>FİYAT</th>
+                                        <th>İŞLEMLER</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($products as $product)
-                                <tr>
-                                    <td>{{ $product->id }}</td>
-                                    <td>{{ $product->name }}</td>
-                                    <td>{{ $product->category->name }}</td>
-                                    <td>{{ $product->productTag->name }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a href="{{ route('admin.product.edit', ['product' => $product]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
-                                            <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $product]) }}"><i class="lni lni-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                    @foreach($products as $product)
+                                    <tr>
+                                        <td>{{ $product->id }}</td>
+                                        <td>
+                                            <a href="{{ asset($product->image) }}" target="_blank">
+                                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" width="50">
+                                            </a>
+                                        </td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ $product->category->name }}</td>
+                                        <td>{{ $product->productTag->name }}</td>
+                                        <td>{{ $product->code }}</td>
+                                        <td>{{ $product->price }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.product.edit', ['product' => $product]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
+                                                <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $product]) }}"><i class="lni lni-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -70,6 +76,7 @@
 @endsection
 
 @section('js')
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable({

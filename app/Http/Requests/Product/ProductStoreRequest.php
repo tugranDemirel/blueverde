@@ -28,6 +28,11 @@ class ProductStoreRequest extends FormRequest
             'code' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'images' => 'nullable|array|max:5',
+            'meta_description' => 'nullable|string|max:160',
+            'meta_keywords' => 'nullable|string|max:160',
+            'system_currency_id' => 'required|exists:system_currencies,id',
         ];
     }
 
@@ -48,6 +53,11 @@ class ProductStoreRequest extends FormRequest
             'description.string' => 'Ürün açıklaması alanı metin tipinde olmalıdır.',
             'price.required' => 'Ürün fiyatı alanı zorunludur.',
             'price.numeric' => 'Ürün fiyatı alanı sayı tipinde olmalıdır.',
+            'image' => 'Ürün resmi alanı zorunludur.',
+            'image.image' => 'Ürün resmi alanı resim tipinde olmalıdır.',
+            'image.mimes' => 'Ürün resmi alanı jpg, jpeg, png tipinde olmalıdır.',
+            'image.max' => 'Ürün resmi alanı en fazla 2048 kb olmalıdır.',
+
         ];
     }
 }

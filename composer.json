@@ -29,7 +29,8 @@
         },
         "files": [
             "app/Helpers/StringHelper.php",
-            "app/Helpers/FileHelpers.php"
+            "app/Helpers/FileHelpers.php",
+            "app/Helpers/ImageHelpers.php"
         ]
     },
     "autoload-dev": {
