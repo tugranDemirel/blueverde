@@ -19,10 +19,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-8 mx-auto">
+        <div class="col-xl-9 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="">
+                    <form action="{{ route('admin.offer.store') }}" method="post">
+                        @csrf
                         <div class="row mt-3">
                             <label class="col-sm-4 col-form-label">Teklif Türü</label>
                             <div class="col-sm-8">
@@ -31,25 +32,42 @@
                                     <option value="{{ \App\Enum\Offer\OfferTypeEnum::DOMESTIC }}">YURT İÇİ</option>
                                     <option value="{{ \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL }}">YURTDIŞI</option>
                                 </select>
+                                @error('offer_type')
+                                 <div class="invalid-feedback">
+                                        {{ $message }}
+                                 </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mt-3 customers" style="visibility: hidden;">
                             <label class="col-sm-4 col-form-label">Müşteriler</label>
                             <div class="col-sm-8">
-                                <select class="form-select" name="costumer_id" id="costumer_id">
+                                <select class="form-select" name="customer_id" id="costumer_id">
                                 </select>
+
+                                @error('customer_id')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <label class="col-sm-4 col-form-label">Ürün Etiketi</label>
                             <div class="col-sm-8">
-                                <select class="form-select" id="product_tag" name="product_tag">
+                                <select class="form-select" id="product_tag" name="product_tag_id">
                                     <option >SEÇİNİZ</option>
                                     @foreach($productTags as $productTag)
                                         <option value="{{ $productTag->id }}">{{ $productTag->name }}</option>
                                     @endforeach
                                 </select>
+
+                                @error('product_tag')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mt-5 productTable" style="visibility: hidden">
@@ -86,6 +104,13 @@
                                     <tbody >
                                     </tbody>
                                 </table>
+
+
+                                @error('products')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -101,6 +126,11 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="discount" value="0" min="0">
                                     <span class="input-group-text" id="basic-addon2">%</span>
+                                    @error('discount')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -115,6 +145,11 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="tax" value="0" min="0">
                                     <span class="input-group-text" id="basic-addon2">%</span>
+                                    @error('tax')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -133,6 +168,11 @@
                                         <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('delivery_id')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -144,9 +184,19 @@
                                         <option data-desc="{{ $term_of_offer->description }}" value="{{ $term_of_offer->id }}">{{ $term_of_offer->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('term_of_offer')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="col-sm-12 mt-5 " id="textarea" style="visibility: hidden">
-                                <textarea name="description" class="form-control ckeditor1" id="offerDesc" cols="30" rows="10"></textarea>
+                                <textarea name="term_of_offer" class="form-control ckeditor1" id="offerDesc" cols="30" rows="10"></textarea>
+                                @error('term_of_offer')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
 
@@ -237,12 +287,12 @@
                 let price = $(this).closest('tr').find('td:eq(6)').text();
                 let total = 0;
                 $('.productSelects tbody').append('<tr class="productSelectsBody">' +
-                    '<td><input type="text" name="id[]" disabled class="form-control-plaintext form-select-sm" value="'+id+'"</td>' +
-                    '<td><input type="text" name="name[]" disabled class="form-control-plaintext form-select-sm" value="'+name+'"</td>' +
-                    '<td><input type="text" name="category[]" disabled class="form-control-plaintext form-select-sm" value="'+category+'"</td>' +
-                    '<td><input type="text" name="product_tag[]" disabled class="form-control-plaintext form-select-sm" value="'+product_tag+'"</td>' +
-                    '<td><input type="text" name="code[]" disabled class="form-control-plaintext form-select-sm" value="'+code+'"</td>' +
-                    '<td><input type="text" name="price[]" class="form-control form-select-sm prices" value="'+price+'"</td>' +
+                    '<td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="'+id+'"</td>' +
+                    '<td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm" value="'+name+'"</td>' +
+                    '<td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="'+category+'"</td>' +
+                    '<td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="'+product_tag+'"</td>' +
+                    '<td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="'+code+'"</td>' +
+                    '<td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="'+price+'"</td>' +
                     '<td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>' +
                     '</tr>');
                     $('.productSelects tbody tr').each(function (){

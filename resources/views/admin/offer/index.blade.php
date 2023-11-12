@@ -34,33 +34,36 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ÜRÜN GÖRSEL</th>
-                                        <th>ÜRÜN ADI</th>
-                                        <th>ÜRÜN KATEGORİ</th>
-                                        <th>ÜRÜN ETİKET</th>
-                                        <th>ÜRÜN KODU</th>
-                                        <th>FİYAT</th>
+                                        <th>TEKLİF TÜRÜ </th>
+                                        <th>MÜŞTERİ ADI/UNVANI</th>
+                                        <th>TOPLAM FİYAT</th>
+                                        <th>KDV ORANI</th>
+                                        <th>İSKONTO ORANI</th>
+                                        <th>TESLİMAT ŞEKLİ</th>
                                         <th>İŞLEMLER</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($offers as $product)
+                                    @foreach($offers as $offer)
                                     <tr>
-                                        <td>{{ $product->id }}</td>
+                                        <td>{{ $offer->id }}</td>
                                         <td>
-                                            <a href="{{ asset($product->image) }}" target="_blank">
-                                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" width="50">
-                                            </a>
+                                            @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::DOMESTIC)
+                                                <span class="badge rounded-pill alert-success">YURT İÇİ</span>
+                                            @endif
+                                            @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                                <span class="badge rounded-pill alert-success">YURT DIŞI</span>
+                                            @endif
                                         </td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->category->name }}</td>
-                                        <td>{{ $product->productTag->name }}</td>
-                                        <td>{{ $product->code }}</td>
-                                        <td>{{ $product->price }}</td>
+                                        <td>{{ $offer->customer->name }}</td>
+                                        <td>{{ $offer->total }}</td>
+                                        <td>{{ $offer->tax }}</td>
+                                        <td>{{ $offer->discount }}</td>
+                                        <td>{{ $offer->delivery->code }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.product.edit', ['product' => $product]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
-                                                <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $product]) }}"><i class="lni lni-trash"></i></button>
+                                                <a href="{{ route('admin.product.edit', ['product' => $offer]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
+                                                <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $offer]) }}"><i class="lni lni-trash"></i></button>
                                             </div>
                                         </td>
                                     </tr>

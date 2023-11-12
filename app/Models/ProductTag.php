@@ -18,4 +18,9 @@ class ProductTag extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
 }

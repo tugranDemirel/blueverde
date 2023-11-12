@@ -82,11 +82,6 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         ->except(['show'])
         ->names('product')
         ->parameters(['urunler' => 'product']);
-
-    Route::resource('teklifler', OfferController::class)
-        ->names('offer')
-        ->parameters(['teklifler' => 'offer']);
-
     Route::resource('sistem-ayarlari/para-birimi', CurrencyController::class)
         ->except(['show'])
         ->names('currency')
@@ -101,6 +96,14 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         ->except(['show'])
         ->names('term_of_offer')
         ->parameters(['teklif-sartlari' => 'term_of_offer']);
+
+    Route::prefix('teklifler')->as('offer.')->group(function (){
+        Route::post('/musteriler', [OfferController::class, 'getCustomer'])->name('getCustomer');
+        Route::post('/urunler', [OfferController::class, 'getProduct'])->name('getProduct');
+    });
+    Route::resource('teklifler', OfferController::class)
+        ->names('offer')
+        ->parameters(['teklifler' => 'offer']);
 
     Route::post('upload', [\App\Http\Controllers\HomeController::class, 'upload'])->name('upload');
 });
