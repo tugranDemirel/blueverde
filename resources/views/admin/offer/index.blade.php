@@ -36,11 +36,13 @@
                                         <th>#</th>
                                         <th>TEKLİF TÜRÜ </th>
                                         <th>MÜŞTERİ ADI/UNVANI</th>
-                                        <th>TOPLAM FİYAT</th>
                                         <th>KDV ORANI</th>
                                         <th>İSKONTO ORANI</th>
+                                        <th>ÜRÜN TOPLAM FİYAT</th>
+                                        <th>GENEL TOPLAM</th>
                                         <th>TESLİMAT ŞEKLİ</th>
-                                        <th>İŞLEMLER</th>
+
+{{--                                        <th>İŞLEMLER</th>--}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,16 +58,24 @@
                                             @endif
                                         </td>
                                         <td>{{ $offer->customer->name }}</td>
-                                        <td>{{ $offer->total }}</td>
                                         <td>{{ $offer->tax }}</td>
                                         <td>{{ $offer->discount }}</td>
-                                        <td>{{ $offer->delivery->code }}</td>
+                                        <td>{{ $offer->total }}</td>
                                         <td>
+                                            @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::DOMESTIC)
+                                                {{ $offer->total + ($offer->total * $offer->tax / 100) - ($offer->total * $offer->discount / 100) }}
+                                            @endif
+                                            @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                                {{ $offer->total + ($offer->total * $offer->tax / 100) - ($offer->total * $offer->discount / 100) + $offer->delivery->price }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $offer->delivery->code }}</td>
+                                        {{--<td>
                                             <div class="btn-group">
                                                 <a href="{{ route('admin.product.edit', ['product' => $offer]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
                                                 <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $offer]) }}"><i class="lni lni-trash"></i></button>
                                             </div>
-                                        </td>
+                                        </td>--}}
                                     </tr>
                                     @endforeach
                                 </tbody>
