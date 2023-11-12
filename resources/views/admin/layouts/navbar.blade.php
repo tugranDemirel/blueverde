@@ -57,6 +57,18 @@
                 <li> <a href="{{ route('admin.product.tag.index') }}" ><i class="bi bi-arrow-right-short"></i>Ürün Etiketleri</a></li>
             </ul>
         </li>
+        <li class="menu-label">Teklif Yönetimi</li>
+
+        <li>
+            <a class="has-arrow" href="javascript:;">
+                <div class="parent-icon"><i class="bi bi-person-check"></i>
+                </div>
+                <div class="menu-title">Teklif İşlemleri</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('admin.offer.index') }}" ><i class="bi bi-arrow-right-short"></i>Teklifler</a></li>
+            </ul>
+        </li>
         <li class="menu-label">Ayarlar</li>
 
         <li>
