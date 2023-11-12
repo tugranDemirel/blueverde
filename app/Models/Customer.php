@@ -39,4 +39,9 @@ class Customer extends Model
         'address' => 'array',
         'authorized_person' => 'array',
     ];
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
 }

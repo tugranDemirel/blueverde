@@ -6,6 +6,10 @@ use App\Http\Controllers\Admin\Customer\OtherCostumerController;
 use App\Http\Controllers\Admin\Customer\TRCustomerController;
 use App\Http\Controllers\Admin\Product\ProductTagController;
 use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Currency\CurrencyController;
+use App\Http\Controllers\Admin\Delivery\DeliveryController;
+use App\Http\Controllers\Admin\TermOfOffer\TermOfOfferController;
+use App\Http\Controllers\Admin\OfferController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,6 +82,25 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         ->except(['show'])
         ->names('product')
         ->parameters(['urunler' => 'product']);
+
+    Route::resource('teklifler', OfferController::class)
+        ->names('offer')
+        ->parameters(['teklifler' => 'offer']);
+
+    Route::resource('sistem-ayarlari/para-birimi', CurrencyController::class)
+        ->except(['show'])
+        ->names('currency')
+        ->parameters(['para-birimi' => 'currency']);
+
+    Route::resource('sistem-ayarlari/teslimat', DeliveryController::class)
+        ->except(['show'])
+        ->names('delivery')
+        ->parameters(['teslimat' => 'delivery']);
+
+    Route::resource('sistem-ayarlari/teklif-sartlari', TermOfOfferController::class)
+        ->except(['show'])
+        ->names('term_of_offer')
+        ->parameters(['teklif-sartlari' => 'term_of_offer']);
 
     Route::post('upload', [\App\Http\Controllers\HomeController::class, 'upload'])->name('upload');
 });
