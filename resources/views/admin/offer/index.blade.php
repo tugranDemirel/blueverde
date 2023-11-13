@@ -42,7 +42,7 @@
                                         <th>GENEL TOPLAM</th>
                                         <th>TESLİMAT ŞEKLİ</th>
 
-{{--                                        <th>İŞLEMLER</th>--}}
+                                        <th>İŞLEMLER</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,12 +70,12 @@
                                             @endif
                                         </td>
                                         <td>{{ $offer->delivery->code }}</td>
-                                        {{--<td>
+                                        <td>
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.product.edit', ['product' => $offer]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
+                                                <a href="{{ route('admin.offer.edit', ['offer' => $offer]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
                                                 <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $offer]) }}"><i class="lni lni-trash"></i></button>
                                             </div>
-                                        </td>--}}
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

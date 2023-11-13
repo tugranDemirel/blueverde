@@ -63,28 +63,47 @@ class OfferController extends Controller
             return redirect()->back()->with('error', 'Teklif eklenirken bir hata oluştu.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Offer $offer)
     {
-        //
+
+        $productTags = ProductTag::all();
+        $term_of_offers = SystemTermOfOffer::all();
+        $deliveries = SystemDeliveryMethod::all();
+        $customers = Customer::where('personal_type', $offer->customer->personal_type)->get();
+        $products = Product::where('product_tag_id', $offer->product_tag_id)->get();
+        //dd($offer->products);
+        return view('admin.offer.edit', compact('offer', 'productTags', 'term_of_offers', 'deliveries', 'customers', 'products'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Offer $offer)
     {
-        //
+        $data = $request->except('_token');
+        if (isset($data['products']))
+        {
+            $products = [];
+            foreach($data['products']['name'] as $key => $name)
+            {
+                $products[$key]['id'] = $data['products']['id'][$key];
+                $products[$key]['name'] = $name;
+                $products[$key]['category'] = $data['products']['category'][$key];
+                $products[$key]['product_tag'] = $data['products']['product_tag'][$key];
+                $products[$key]['code'] = $data['products']['code'][$key];
+                $products[$key]['price'] = $data['products']['price'][$key];
+            }
+            $data['products'] = $products;
+        }
+        $update = $offer->update($data);
+        if ($update)
+            return redirect()->route('admin.offer.index')->with('success', 'Teklif başarıyla güncellendi.');
+        else
+            return redirect()->back()->with('error', 'Teklif güncellenirken bir hata oluştu.');
     }
 
     /**

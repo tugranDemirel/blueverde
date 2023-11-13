@@ -6,6 +6,7 @@
     <meta name="getProduct" content="{{ route('admin.offer.getProduct') }}">
 @endsection
 @section('content')
+
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Ekle</div>
         <div class="ps-3">
@@ -22,27 +23,31 @@
         <div class="col-xl-9 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.offer.store') }}" method="post">
+                    <form action="{{ route('admin.offer.update', ['offer' => $offer]) }}" method="post">
                         @csrf
+                        @method('PUT')
                         <div class="row mt-3">
                             <label class="col-sm-4 col-form-label">Teklif Türü</label>
                             <div class="col-sm-8">
                                 <select class="form-select" name="offer_type" id="offer_type">
                                     <option name="" id="">SEÇİNİZ</option>
-                                    <option value="{{ \App\Enum\Offer\OfferTypeEnum::DOMESTIC }}">YURT İÇİ</option>
-                                    <option value="{{ \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL }}">YURTDIŞI</option>
+                                    <option value="{{ \App\Enum\Offer\OfferTypeEnum::DOMESTIC }}" @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::DOMESTIC) selected @endif>YURT İÇİ</option>
+                                    <option value="{{ \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL }}" @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL) selected @endif>YURTDIŞI</option>
                                 </select>
                                 @error('offer_type')
-                                 <div class="invalid-feedback">
-                                        {{ $message }}
-                                 </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mt-3 customers" style="visibility: hidden;">
+                        <div class="row mt-3 customers">
                             <label class="col-sm-4 col-form-label">Müşteriler</label>
                             <div class="col-sm-8">
                                 <select class="form-select" name="customer_id" id="costumer_id">
+                                    @foreach($customers as $customer)
+                                        <option value="{{ $customer->id }}" @if($offer->customer_id == $customer->id) selected @endif>{{ $customer->name }}</option>
+                                    @endforeach
                                 </select>
 
                                 @error('customer_id')
@@ -59,7 +64,7 @@
                                 <select class="form-select" id="product_tag" name="product_tag_id">
                                     <option >SEÇİNİZ</option>
                                     @foreach($productTags as $productTag)
-                                        <option value="{{ $productTag->id }}">{{ $productTag->name }}</option>
+                                        <option value="{{ $productTag->id }}" @if($productTag->id == $offer->product_tag_id) selected @endif>{{ $productTag->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -70,20 +75,31 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mt-5 productTable" style="visibility: hidden">
+                        <div class="row mt-5 productTable" >
                             <table id="myTable" class="display" >
                                 <thead>
-                                    <tr>
-                                        <th>ÜRÜN SEÇİM</th>
-                                        <th>#</th>
-                                        <th>ÜRÜN ADI</th>
-                                        <th>ÜRÜN KATEGORİ</th>
-                                        <th>ÜRÜN ETİKET</th>
-                                        <th>ÜRÜN KODU</th>
-                                        <th>FİYAT</th>
-                                    </tr>
+                                <tr>
+                                    <th>ÜRÜN SEÇİM</th>
+                                    <th>#</th>
+                                    <th>ÜRÜN ADI</th>
+                                    <th>ÜRÜN KATEGORİ</th>
+                                    <th>ÜRÜN ETİKET</th>
+                                    <th>ÜRÜN KODU</th>
+                                    <th>FİYAT</th>
+                                </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($products as $product)
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success btn-sm productSelect">+</button></td>
+                                            <td>{{ $product->id }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->category->name }}</td>
+                                            <td>{{ $product->productTag->name }}</td>
+                                            <td>{{ $product->code }}</td>
+                                            <td>{{ $product->price }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -92,19 +108,29 @@
                             <div class="col-sm-12">
                                 <table class="table">
                                     <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>ÜRÜN ADI</th>
-                                            <th>ÜRÜN KATEGORİ</th>
-                                            <th>ÜRÜN ETİKET</th>
-                                            <th>ÜRÜN KODU</th>
-                                            <th>FİYAT</th>
-                                        </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ÜRÜN ADI</th>
+                                        <th>ÜRÜN KATEGORİ</th>
+                                        <th>ÜRÜN ETİKET</th>
+                                        <th>ÜRÜN KODU</th>
+                                        <th>FİYAT</th>
+                                    </tr>
                                     </thead>
                                     <tbody >
+                                        @foreach($offer->products as $offerProduct)
+                                            <tr>
+                                                <td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['id'] }}"</td>
+                                                <td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['name'] }}"</td>
+                                                <td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['category'] }}"</td>
+                                                <td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['product_tag'] }}"</td>
+                                                <td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['code'] }}"</td>
+                                                <td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="{{ $offerProduct['price'] }}"</td>
+                                                <td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-
 
                                 @error('products')
                                 <div class="invalid-feedback">
@@ -116,7 +142,7 @@
                         <div class="row mt-5">
                             <label class="col-sm-2 col-form-label">Toplam Ürün Fiyatı</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control-plaintext" name="total" id="">
+                                <input type="text" class="form-control-plaintext" name="total" value="{{ $offer->total }}" id="">
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -124,7 +150,7 @@
 
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="discount" value="0" min="0">
+                                    <input type="number" class="form-control" name="discount" value="{{ $offer->discount }}" min="0">
                                     <span class="input-group-text" id="basic-addon2">%</span>
                                     @error('discount')
                                     <div class="invalid-feedback">
@@ -136,14 +162,16 @@
                             <div class="col-md-3">
                                 <button type="button" id="discount" class="btn btn-primary btn-sm">Hesapla</button>
                             </div>
-                            <label class="col-sm-2 col-form-label" id="discountValue"></label>
+                            <label class="col-sm-2 col-form-label" id="discountValue">
+                                {{ $offer->total - (($offer->total * $offer->discount) / 100) }}
+                            </label>
                         </div>
                         <div class="row mt-5">
                             <label class="col-sm-2 col-form-label">KDV</label>
 
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="tax" value="0" min="0">
+                                    <input type="number" class="form-control" name="tax" value="{{ $offer->tax }}" min="0">
                                     <span class="input-group-text" id="basic-addon2">%</span>
                                     @error('tax')
                                     <div class="invalid-feedback">
@@ -155,7 +183,9 @@
                             <div class="col-md-3">
                                 <button type="button" id="tax" class="btn btn-primary btn-sm">Hesapla</button>
                             </div>
-                            <label class="col-sm-2 col-form-label" id="taxValue"></label>
+                            <label class="col-sm-2 col-form-label" id="taxValue">
+                                {{ $offer->total - (($offer->total * $offer->discount) / 100) + (($offer->total - (($offer->total * $offer->discount) / 100)) * $offer->tax) / 100 }}
+                            </label>
                         </div>
 
 
@@ -165,7 +195,7 @@
                                 <select name="delivery_id" class="form-select" id="">
                                     <option value="">SEÇİNİZ</option>
                                     @foreach($deliveries as $delivery)
-                                        <option value="{{ $delivery->id }}">{{ $delivery->name }}</option>
+                                        <option value="{{ $delivery->id }}" @if($offer->delivery_id == $delivery->id) selected @endif>{{ $delivery->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('delivery_id')
@@ -190,8 +220,8 @@
                                 </div>
                                 @enderror
                             </div>
-                            <div class="col-sm-12 mt-5 " id="textarea" style="visibility: hidden">
-                                <textarea name="term_of_offer" class="form-control ckeditor1" id="offerDesc" cols="30" rows="10"></textarea>
+                            <div class="col-sm-12 mt-5 " id="textarea">
+                                <textarea name="term_of_offer" class="form-control ckeditor1" id="offerDesc" cols="30" rows="10">{!! $offer->term_of_offer !!}</textarea>
                                 @error('term_of_offer')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -212,6 +242,7 @@
         </div>
     </div>
 @endsection
+
 @section('js')
     <script>
         $(document).ready(function (){
@@ -279,27 +310,27 @@
 
         $('#myTable tbody').on('click', '.productSelect', function (){
 
-                let id = $(this).closest('tr').find('td:eq(1)').text();
-                let name = $(this).closest('tr').find('td:eq(2)').text();
-                let category = $(this).closest('tr').find('td:eq(3)').text();
-                let product_tag = $(this).closest('tr').find('td:eq(4)').text();
-                let code = $(this).closest('tr').find('td:eq(5)').text();
-                let price = $(this).closest('tr').find('td:eq(6)').text();
-                let total = 0;
-                $('.productSelects tbody').append('<tr class="productSelectsBody">' +
-                    '<td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="'+id+'"</td>' +
-                    '<td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm" value="'+name+'"</td>' +
-                    '<td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="'+category+'"</td>' +
-                    '<td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="'+product_tag+'"</td>' +
-                    '<td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="'+code+'"</td>' +
-                    '<td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="'+price+'"</td>' +
-                    '<td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>' +
-                    '</tr>');
-                    $('.productSelects tbody tr').each(function (){
-                        let price = $(this).find('.prices').val();
-                        total += parseInt(price);
-                    })
-                    $('input[name="total"]').val(total);
+            let id = $(this).closest('tr').find('td:eq(1)').text();
+            let name = $(this).closest('tr').find('td:eq(2)').text();
+            let category = $(this).closest('tr').find('td:eq(3)').text();
+            let product_tag = $(this).closest('tr').find('td:eq(4)').text();
+            let code = $(this).closest('tr').find('td:eq(5)').text();
+            let price = $(this).closest('tr').find('td:eq(6)').text();
+            let total = 0;
+            $('.productSelects tbody').append('<tr class="productSelectsBody">' +
+                '<td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="'+id+'"</td>' +
+                '<td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm" value="'+name+'"</td>' +
+                '<td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="'+category+'"</td>' +
+                '<td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="'+product_tag+'"</td>' +
+                '<td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="'+code+'"</td>' +
+                '<td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="'+price+'"</td>' +
+                '<td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>' +
+                '</tr>');
+            $('.productSelects tbody tr').each(function (){
+                let price = $(this).find('.prices').val();
+                total += parseInt(price);
+            })
+            $('input[name="total"]').val(total);
         });
 
         $('.productSelects tbody').on('click', '.removeProduct', function (){
