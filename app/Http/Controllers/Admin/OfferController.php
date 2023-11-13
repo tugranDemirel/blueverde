@@ -109,9 +109,11 @@ class OfferController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Offer $offer)
     {
-        //
+        if ($offer->delete())
+            return response()->json(['status' => true, 'message' => 'Teklif başarıyla silindi.']);
+        return response()->json(['status' => false, 'message' => 'Teklif silinirken bir hata oluştu.']);
     }
 
     /**

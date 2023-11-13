@@ -73,7 +73,7 @@
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{{ route('admin.offer.edit', ['offer' => $offer]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
-                                                <button type="button" class="btn btn-danger removeProduct" data-url="{{ route('admin.product.destroy', ['product' => $offer]) }}"><i class="lni lni-trash"></i></button>
+                                                <button type="button" class="btn btn-danger removeoffer" data-url="{{ route('admin.offer.destroy', ['offer' => $offer]) }}"><i class="lni lni-trash"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -99,7 +99,7 @@
     </script>
     <script>
         $(document).ready(function (){
-            $('.removeProduct').click(function () {
+            $('.removeoffer').click(function () {
                 let url = $(this).data('url')
 
                 let id = url.split('/')[5]
@@ -111,12 +111,12 @@
                         _token: '{{ csrf_token() }}',
                     },
                     success: function (response){
-                        if (response.success === true){
+                        if (response.status === true){
                             alert(response.message)
                             window.location.reload()
                         }
 
-                        if (response.success === false){
+                        if (response.status === false){
                             alert(response.message)
                             window.location.reload()
                         }
