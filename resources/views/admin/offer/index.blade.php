@@ -74,6 +74,7 @@
                                             <div class="btn-group">
                                                 <a href="{{ route('admin.offer.edit', ['offer' => $offer]) }}" class="btn btn-success"><i class="lni lni-pencil-alt"></i></a>
                                                 <button type="button" class="btn btn-danger removeoffer" data-url="{{ route('admin.offer.destroy', ['offer' => $offer]) }}"><i class="lni lni-trash"></i></button>
+                                                <a href="{{ route('admin.offer.show', ['offer' => $offer]) }}" class="btn btn-warning"><i class="bi bi-file-earmark-pdf-fill"></i></a>
                                             </div>
                                         </td>
                                     </tr>

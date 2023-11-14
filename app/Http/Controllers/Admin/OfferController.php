@@ -63,6 +63,11 @@ class OfferController extends Controller
             return redirect()->back()->with('error', 'Teklif eklenirken bir hata oluştu.');
     }
 
+    public function show(Offer $offer)
+    {
+        $offer->load(['customer', 'delivery', 'productTag']);
+        return view('admin.offer.show', compact('offer'));
+    }
 
     /**
      * Show the form for editing the specified resource.

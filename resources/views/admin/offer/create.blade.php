@@ -178,7 +178,7 @@
                         <div class="row mt-5">
                             <label class="col-sm-2 col-form-label">Teklif Şartı</label>
                             <div class="col-sm-8">
-                                <select name="term_of_offer" class="form-select " id="term_of_offer">
+                                <select name="" class="form-select " id="term_of_offer">
                                     <option value="">SEÇİNİZ</option>
                                     @foreach($term_of_offers as $term_of_offer)
                                         <option data-desc="{{ $term_of_offer->description }}" value="{{ $term_of_offer->id }}">{{ $term_of_offer->name }}</option>
