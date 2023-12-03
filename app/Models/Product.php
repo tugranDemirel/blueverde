@@ -23,6 +23,15 @@ class Product extends Model
         'image',
         'meta_keywords',
         'meta_description',
+        'type',
+        'product_size',
+        'material',
+        'color',
+        'detail',
+    ];
+
+    protected $casts = [
+        'type' => 'array'
     ];
 
     public function category() : BelongsTo
