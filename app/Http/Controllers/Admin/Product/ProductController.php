@@ -98,7 +98,6 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, Product $product)
     {
         $data = $request->validated();
-
         if (isset($data['image']))
         {
             $data['image'] = ImageHelpers::upload($data['image'], $this->_path, $product->image);

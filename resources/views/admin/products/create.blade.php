@@ -110,32 +110,6 @@
                                         </div>
                                     </div>
                                 @endif
-                                {{--   @endif@if($categories->count() > 0)
-                                   <div class="row  mt-3">
-                                       <label class="col-sm-4 col-form-label">Kategori</label>
-                                       <div class="col-sm-6">
-                                           <select name="category" id="category" class="form-control">
-                                               <option value="">Ana Kategori</option>
-                                               @foreach($categories as $category)
-                                                   <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                   @if($category->children)
-                                                       @include('admin.products.subcategories', ['subcategories' => $category->children, 'prefix' => '-'])
-                                                   @endif
-                                               @endforeach
-                                           </select>
-
-                                       </div>
-                                   </div>
-                                   @else
-                                       <div class="row  mt-3">
-                                           <label class="col-sm-4 col-form-label">Kategori</label>
-                                           <div class="col-sm-6">
-                                               <div class="alert alert-warning">
-                                                   Lütfen <strong>Kategori</strong> Ekleyiniz.
-                                               </div>
-                                           </div>
-                                       </div>
-                                   @endif--}}
                                 <div class="row  mt-3">
                                     <label class="col-sm-4 col-form-label">Ürün Adı</label>
                                     <div class="col-sm-6">
@@ -162,7 +136,6 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                 </div>
                                 <div class="row  mt-3">
                                     <label class="col-sm-4 col-form-label">Ürün Fiyatı</label>
@@ -185,12 +158,64 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün Ebatı/Boyutu</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control @error('product_size') is-invalid @enderror" value="{{ old('product_size') }}" name="product_size" placeholder="Ürün Ebatı/Boyutu Giriniz">
+                                        @error('product_size')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                                <div class="row  mt-3" id="types">
+                                    <label class="col-sm-4 col-form-label">Tip</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control @error('type') is-invalid @enderror" name="type[]" placeholder="Ürün Tipi Giriniz">
+                                        @error('type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-success addType" data-url=""><i class="lni lni-circle-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün Malzeme</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('material') is-invalid @enderror" value="{{ old('material') }}" name="material"  placeholder="Ürün Malzeme Giriniz">
+                                        @error('material')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row  mt-3">
+                                    <label class="col-sm-4 col-form-label">Ürün Rengi</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('color') is-invalid @enderror" value="{{ old('color') }}" name="color"  placeholder="Ürün Rengi Giriniz">
+                                        @error('color')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row  mt-3">
+                                    <div class="col-sm-12 ">
+                                        <label for="">Ürün Detay</label>
+                                        <textarea class="form-control ckeditor1 @error('detail') is-invalid @enderror" name="detail" rows="4" placeholder="Ürün Açıklaması Giriniz">{{ old('detail') }}</textarea>
+                                        @error('detail')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="row  mt-3">
                                     <div class="col-sm-12 ">
                                         <label for="">Ürün Açıklaması</label>
                                         <textarea class="form-control ckeditor1 @error('description') is-invalid @enderror" name="description" rows="4" placeholder="Ürün Açıklaması Giriniz">{{ old('description') }}</textarea>
 
-                                        @error('system_currency_id')
+                                        @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -281,7 +306,30 @@
         $('#images').on('click','.removeProduct', function () {
             $(this).closest('.imagesItem').remove();
         })
-
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.addType').click(function () {
+                html = `
+                <div class="row mt-3">
+                    <label class="col-sm-4 col-form-label" style="margin-left: 7px;">Tip</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control @error('type[]') is-invalid @enderror" value="{{ old('type[]') }}" name="type[]" placeholder="Ürün Tipi Giriniz">
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger removeType" data-url=""><i class="lni lni-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                `
+                $('#types').append(html);
+                i++;
+            })
+        })
+        $('#types').on('click','.removeType', function () {
+            $(this).closest('.row').remove();
+        })
     </script>
     <script>
             $(document).ready(function() {
@@ -311,7 +359,7 @@
         let ck = document.querySelectorAll('.ckeditor1');
         for (let i = 0; i < ck.length; i++) {
             CKEDITOR.replace(ck[i], {
-                height: 650,
+                height: 450,
                 filebrowserUploadUrl: "{{route('admin.upload', ['_token' => csrf_token() ])}}",
                 filebrowserUploadMethod: 'form'
             });

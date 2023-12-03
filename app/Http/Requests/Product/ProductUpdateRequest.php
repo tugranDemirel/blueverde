@@ -30,9 +30,14 @@ class ProductUpdateRequest extends FormRequest
             'price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'images' => 'nullable|array|max:5',
-            'meta_description' => 'required|string|max:160',
-            'meta_keywords' => 'required|string|max:160',
+            'meta_description' => 'nullable|string|max:160',
+            'meta_keywords' => 'nullable|string|max:160',
             'system_currency_id' => 'required|exists:system_currencies,id',
+            'type.*' => 'nullable',
+            'product_size' => 'required',
+            'material' => 'required',
+            'color' => 'required',
+            'detail' => 'required',
         ];
     }
 
@@ -64,6 +69,10 @@ class ProductUpdateRequest extends FormRequest
             'meta_keywords.max' => 'Meta anahtar kelimeler alanı en fazla 160 karakter olmalıdır.',
             'system_currency_id.required' => 'Sistem para birimi alanı zorunludur.',
             'system_currency_id.exists' => 'Sistem para birimi alanı geçerli bir sistem para birimi olmalıdır.',
+            'product_size.required' => 'Ürün boyutu alanı zorunludur.',
+            'material.required' => 'Ürün malzemesi alanı zorunludur.',
+            'color.required' => 'Ürün rengi alanı zorunludur.',
+            'detail.required' => 'Ürün detayı alanı zorunludur.',
         ];
     }
 }
