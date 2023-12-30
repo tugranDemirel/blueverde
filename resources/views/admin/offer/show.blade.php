@@ -199,6 +199,13 @@
                                         Ürün Kodu
                                     @endif
                                 </th>
+                                <th class="text-center" width="10%">
+                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                        Product Quantity
+                                    @else
+                                        Ürün Adet
+                                    @endif
+                                </th>
                                 <th class="text-right" width="20%">
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
                                         Product Price
@@ -216,6 +223,7 @@
                                     </td>
                                     <td class="text-center">{{ $product['category'] }}</td>
                                     <td class="text-center">{{ $product['code'] }}</td>
+                                    <td style="text-align: center">{{ $product['quantity'] }}</td>
                                     <td class="text-right">{{ $product['price'] }}</td>
                                 </tr>
                             @endforeach

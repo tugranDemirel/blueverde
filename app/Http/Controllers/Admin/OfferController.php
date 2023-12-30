@@ -52,6 +52,7 @@ class OfferController extends Controller
                 $products[$key]['category'] = $data['products']['category'][$key];
                 $products[$key]['product_tag'] = $data['products']['product_tag'][$key];
                 $products[$key]['code'] = $data['products']['code'][$key];
+                $products[$key]['quantity'] = $data['products']['quantity'][$key];
                 $products[$key]['price'] = $data['products']['price'][$key];
             }
             $data['products'] = $products;
@@ -100,6 +101,7 @@ class OfferController extends Controller
                 $products[$key]['category'] = $data['products']['category'][$key];
                 $products[$key]['product_tag'] = $data['products']['product_tag'][$key];
                 $products[$key]['code'] = $data['products']['code'][$key];
+                $products[$key]['quantity'] = $data['products']['quantity'][$key];
                 $products[$key]['price'] = $data['products']['price'][$key];
             }
             $data['products'] = $products;

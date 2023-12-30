@@ -114,6 +114,7 @@
                                         <th>ÜRÜN KATEGORİ</th>
                                         <th>ÜRÜN ETİKET</th>
                                         <th>ÜRÜN KODU</th>
+                                        <th>ÜRÜN ADET</th>
                                         <th>FİYAT</th>
                                     </tr>
                                     </thead>
@@ -125,6 +126,7 @@
                                                 <td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['category'] }}"</td>
                                                 <td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['product_tag'] }}"</td>
                                                 <td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['code'] }}"</td>
+                                                <td><input type="text" name="products[quantity][]" class="form-control form-select-sm quantity" value="{{ $offerProduct['quantity'] ?? 0 }}"</td>
                                                 <td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="{{ $offerProduct['price'] }}"</td>
                                                 <td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>
                                             </tr>
@@ -142,7 +144,7 @@
                         <div class="row mt-5">
                             <label class="col-sm-2 col-form-label">Toplam Ürün Fiyatı</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control-plaintext" name="total" value="{{ $offer->total }}" id="">
+                                <input type="text" class="form-control-plaintext" readonly name="total" value="{{ $offer->total }}" id="">
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -323,31 +325,45 @@
                 '<td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="'+category+'"</td>' +
                 '<td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="'+product_tag+'"</td>' +
                 '<td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="'+code+'"</td>' +
+                '<td><input type="text" name="products[quantity][]" class="form-control form-select-sm quantity" value="'+ 1 +'"</td>' +
                 '<td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="'+price+'"</td>' +
                 '<td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>' +
                 '</tr>');
             $('.productSelects tbody tr').each(function (){
                 let price = $(this).find('.prices').val();
-                total += parseInt(price);
+                let quantity = $(this).find('.quantity').val();
+                total += parseInt(price) * parseInt(quantity);
             })
             $('input[name="total"]').val(total);
         });
 
         $('.productSelects tbody').on('click', '.removeProduct', function (){
             let price = $(this).closest('tr').find('.prices').val();
+            let quantity = $(this).closest('tr').find('.quantity').val();
             let total = $('input[name="total"]').val();
             let id = $(this).closest('tr').find('td:eq(0)').text();
-            let totalDiscount = parseInt(total - price);
+            let totalDiscount = parseInt(total - (price * quantity));
             $('input[name="total"]').val(totalDiscount);
             $('#myTable tbody').find('td:contains('+id+')').closest('tr').find('.productSelect').prop('checked', false);
             $(this).closest('tr').remove();
+        })
+
+        $('.productSelects tbody').on('change', '.quantity', function (){
+            var total = 0;
+            $('.productSelects tbody tr').each(function (){
+                let price = $(this).find('.prices').val();
+                let quantity = $(this).find('.quantity').val();
+                total += parseInt(price) * parseInt(quantity);
+            })
+            $('input[name="total"]').val(total);
         })
 
         $('.productSelects tbody').on('change', '.prices', function (){
             var total = 0;
             $('.productSelects tbody tr').each(function (){
                 let price = $(this).find('.prices').val();
-                total += parseInt(price);
+                let quantity = $(this).find('.quantity').val();
+                total += parseInt(price) * parseInt(quantity);
             })
             $('input[name="total"]').val(total);
         })
@@ -371,7 +387,8 @@
             }
             $('.productSelects tbody tr').each(function (){
                 let price = $(this).find('.prices').val();
-                total += parseInt(price);
+                let quantity = $(this).find('.quantity').val();
+                total += parseInt(price) * parseInt(quantity);
             })
             var totalDiscount = total - ((total * discount) / 100);
             $('#discountValue').text(totalDiscount);
@@ -396,7 +413,8 @@
             }
             $('.productSelects tbody tr').each(function (){
                 let price = $(this).find('.prices').val();
-                total += parseInt(price);
+                let quantity = $(this).find('.quantity').val();
+                total += parseInt(price) * parseInt(quantity);
             })
             total = total - ((total * discount) / 100);
             var totalDiscount = total + ((total * tax) / 100);
