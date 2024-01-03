@@ -202,9 +202,9 @@
                                     </div>
                                 </div>
                                 <div class="row  mt-3">
-                                    <div class="col-sm-12 ">
-                                        <label for="">Ürün Detay</label>
-                                        <textarea class="form-control ckeditor1 @error('detail') is-invalid @enderror" name="detail" rows="4" placeholder="Ürün Açıklaması Giriniz">{{ old('detail') }}</textarea>
+                                    <label class="col-sm-4 col-form-label">Ürün Detay</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('detail') is-invalid @enderror" value="{{ old('detail') }}" name="detail"  placeholder="Ürün Açıklaması Giriniz">
                                         @error('detail')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
