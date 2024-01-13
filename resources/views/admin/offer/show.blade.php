@@ -40,7 +40,6 @@
     <!--end top header-->
 
     <!--start sidebar -->
-
     <!--start content-->
     <main class="" style="margin: 50px;">
         <!--breadcrumb-->
@@ -87,35 +86,25 @@
                             <div class="">
                                 <small>
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        From
+                                        To
                                     @else
-                                        Teklif Yapan
+                                        Teklif Yapılan
                                     @endif
                                 </small>
                                 <address class="m-t-5 m-b-5">
                                     <strong class="text-inverse">
-                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                            B V TEXTILE LIMITED COMPANY
-                                        @else
-                                            B V TEKSTİL LİMİTED ŞİRKETİ
-                                        @endif
-                                    </strong><br>@if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-
-                                        Ortabayır District <br> Şair Çelebi Street Number:1/3 <br>
-                                        34413 Kagithane/Istanbul/Turkey
-                                    @else
-                                        Ortabayır Mahallesi <br> Şair Çelebi Sokak No:1/3 <br>
-                                        34413 Kağıthane/İstanbul/Türkiye
-                                    @endif
-
+                                        {{ $offer->customer->name }}
+                                    </strong><br>
+                                    @foreach($offer->customer->address as $address) {{ $address }} @endforeach <br>
+                                     {{ $offer->customer->post_code ?? '' }}/ {{ $offer->customer->district ?? '' }}/ {{ $offer->customer->province ?? '' }}/ {{ $offer->customer->country }}<br>
                                     <br>
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
                                         Phone
                                     @else
                                         Telefon
                                     @endif
-                                    : +90(533)-244-9428<br>
-                                    Email: info@blu-verde.com
+                                    : {{ $offer->customer->phone }}<br>
+                                    Email: {{ $offer->customer->email }}
                                 </address>
                             </div>
                         </div>
@@ -202,38 +191,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($offer->products as $product)
-                                @php
-                                 $p = \App\Models\Product::find($product['id']);
-//                                 dd($p->system_currency_id);
-                                 $currency = \App\Models\SystemCurrency::find($p->system_currency_id);
-                                $symbol = $currency->symbol;
-                                @endphp
+                            @foreach($offer->productOffers as $product)
                                 <tr>
                                     <td>
-                                        <span class="text-inverse">{{ $product['name'] }}</span><br>
+                                        <span class="text-inverse">{{ $product->name }}</span><br>
                                     </td>
                                     <td>
-                                        <span class="text-inverse">{{ $p->product_size }}</span><br>
+                                        <span class="text-inverse">{{ $product->product_size }}</span><br>
                                     </td>
                                     <td>
-                                        <span class="text-inverse">{{ $p->material }}</span>
-                                        <span class="text-inverse">{{ $p->color }}</span>
+                                        <span class="text-inverse">{{ $product->material }}</span>
+                                        <span class="text-inverse">{{ $product->color }}</span>
 
                                         <span class="text-inverse">
-                                            @if(!is_null($p->type))
-                                            @forelse($p->type as $type)
-                                                {{ $type }}
-                                                @if(!$loop->last) , @endif
-                                            @empty
-
-                                            @endforelse
-                                            @endif
+                                            {{ $product->type }}
                                         </span><br>
                                     </td>
-                                    <td style="text-align: center">{{ $product['quantity'] }}</td>
-                                    <td class="text-right">{{ $product['price'] }}</td>
-                                    <td class="text-right">{{ $product['quantity'] * $product['price'].' '. $symbol }} </td>
+                                    <td style="text-align: center">{{ $product->quantity }}</td>
+                                    <td class="text-right">{{ $product->price }}</td>
+                                    <td class="text-right">{{ $product->quantity * $product->price.' '. $product->currency }} </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -251,13 +227,16 @@
                                         @endif
                                     </td>
                                     <td class="col-1 text-right">
+
                                         @php
                                             $total = 0;
-                                            foreach ($offer->products as $product){
-                                                $total += $product['quantity'] * $product['price'];
+                                        @endphp
+                                        @php
+                                            foreach ($offer->productOffers as $product){
+                                                $total += $product->quantity * $product->price;
                                             }
                                         @endphp
-                                        {{ $total }} {{ $symbol }}
+                                        {{ $total }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -275,11 +254,13 @@
                                     <td class="col-1 text-right">
                                         @php
                                             $total = 0;
-                                            foreach ($offer->products as $product){
-                                                $total += $product['quantity'] * $product['price'];
+                                        @endphp
+                                        @php
+                                            foreach ($offer->productOffers as $product){
+                                                $total += $product->quantity * $product->price;
                                             }
                                         @endphp
-                                        {{ $total * $offer->tax / 100 }} {{ $symbol }}
+                                        {{ $total * $offer->tax / 100 }}
                                     </td>
                                 </tr>
                                 @if(isset($offer->discount))
@@ -298,11 +279,13 @@
                                     <td class="col-1 text-right">
                                         @php
                                             $total = 0;
-                                            foreach ($offer->products as $product){
-                                                $total += $product['quantity'] * $product['price'];
+                                        @endphp
+                                        @php
+                                            foreach ($offer->productOffers as $product){
+                                                $total += $product->quantity * $product->price;
                                             }
                                         @endphp
-                                        {{ $total * $offer->discount / 100 }} {{ $symbol }}
+                                        {{ $total * $offer->discount / 100 }}
                                     </td>
                                 </tr>
                                 @endif
@@ -321,11 +304,13 @@
                                     <td class="col-1 text-right">
                                         @php
                                             $total = 0;
-                                            foreach ($offer->products as $product){
-                                                $total += $product['quantity'] * $product['price'];
+                                        @endphp
+                                        @php
+                                            foreach ($offer->productOffers as $product){
+                                                $total += $product->quantity * $product->price;
                                             }
                                         @endphp
-                                        {{ $total + ($total * $offer->tax / 100) - ($total * $offer->discount / 100) }} {{ $symbol }}
+                                        {{ $total + ($total * $offer->tax / 100) - ($total * $offer->discount / 100) }}
                                     </td>
                                 </tr>
                             </tfoot>

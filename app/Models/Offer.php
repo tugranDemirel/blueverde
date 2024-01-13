@@ -43,4 +43,14 @@ class Offer extends Model
     {
         return $this->belongsTo(ProductTag::class);
     }
+
+    public function productOffers()
+    {
+        return $this->hasMany(ProductOffer::class);
+    }
+
+    public function termOfOffer()
+    {
+        return $this->belongsTo(SystemTermOfOffer::class);
+    }
 }

@@ -8,9 +8,11 @@ use App\Http\Requests\Offer\OfferStoreRequest;
 use App\Models\Customer;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\ProductOffer;
 use App\Models\ProductTag;
 use App\Models\SystemDeliveryMethod;
 use App\Models\SystemTermOfOffer;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 
@@ -39,25 +41,34 @@ class OfferController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OfferStoreRequest $request): RedirectResponse
     {
-       $data = $request->except('_token');
-        if (isset($data['products']))
-        {
-            $products = [];
-            foreach($data['products']['name'] as $key => $name)
-            {
-                $products[$key]['id'] = $data['products']['id'][$key];
-                $products[$key]['name'] = $name;
-                $products[$key]['category'] = $data['products']['category'][$key];
-                $products[$key]['product_tag'] = $data['products']['product_tag'][$key];
-                $products[$key]['code'] = $data['products']['code'][$key];
-                $products[$key]['quantity'] = $data['products']['quantity'][$key];
-                $products[$key]['price'] = $data['products']['price'][$key];
-            }
-            $data['products'] = $products;
+        $data = collect($request->validated());
+
+        $items = ($data['products']);
+        unset($data['products']);
+        $create = Offer::create($data->toArray());
+
+        $products = [];
+        foreach ($items['name'] as $key => $name) {
+
+            $products[$key]['product_id'] = $items['product_id'][$key];
+            $products[$key]['offer_id'] = $create->id;
+            $products[$key]['name'] = $items['name'][$key];
+            $products[$key]['category'] = $items['category'][$key];
+            $products[$key]['product_size'] = $items['product_size'][$key];
+            $products[$key]['type'] = $items['type'][$key];
+            $products[$key]['material'] = $items['material'][$key];
+            $products[$key]['color'] = $items['color'][$key];
+            $products[$key]['detail'] = $items['detail'][$key];
+            $products[$key]['quantity'] = (int)$items['quantity'][$key];
+            $products[$key]['price'] = (float)$items['price'][$key];
+            $products[$key]['currency'] = $items['currency'][$key];
         }
-        $create = Offer::create($data);
+        $create->productOffers()->createMany($products);
+        /*foreach ($products as $product) {
+            ProductOffer::create($product);
+        }*/
         if ($create)
             return redirect()->route('admin.offer.index')->with('success', 'Teklif başarıyla eklendi.');
         else
@@ -66,7 +77,7 @@ class OfferController extends Controller
 
     public function show(Offer $offer)
     {
-        $offer->load(['customer', 'delivery', 'productTag']);
+        $offer->load(['customer', 'delivery', 'productTag', 'productOffers']);
         return view('admin.offer.show', compact('offer'));
     }
 
@@ -88,25 +99,39 @@ class OfferController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Offer $offer)
+    public function update(OfferStoreRequest $request, Offer $offer)
     {
-        $data = $request->except('_token');
-        if (isset($data['products']))
-        {
-            $products = [];
-            foreach($data['products']['name'] as $key => $name)
-            {
-                $products[$key]['id'] = $data['products']['id'][$key];
-                $products[$key]['name'] = $name;
-                $products[$key]['category'] = $data['products']['category'][$key];
-                $products[$key]['product_tag'] = $data['products']['product_tag'][$key];
-                $products[$key]['code'] = $data['products']['code'][$key];
-                $products[$key]['quantity'] = $data['products']['quantity'][$key];
-                $products[$key]['price'] = $data['products']['price'][$key];
-            }
-            $data['products'] = $products;
+        $data = collect($request->validated());
+
+        $items = ($data['products']);
+        unset($data['products']);
+
+        $update = $offer->update($data->toArray());
+
+        $products = [];
+        foreach ($items['name'] as $key => $name) {
+
+            $products[$key]['product_id'] = $items['product_id'][$key];
+            $products[$key]['offer_id'] = $offer->id;
+            $products[$key]['name'] = $items['name'][$key];
+            $products[$key]['category'] = $items['category'][$key];
+            $products[$key]['product_size'] = $items['product_size'][$key];
+            $products[$key]['type'] = $items['type'][$key];
+            $products[$key]['material'] = $items['material'][$key];
+            $products[$key]['color'] = $items['color'][$key];
+            $products[$key]['detail'] = $items['detail'][$key];
+            $products[$key]['quantity'] = (int)$items['quantity'][$key];
+            $products[$key]['price'] = (float)$items['price'][$key];
+            $products[$key]['currency'] = $items['currency'][$key];
         }
-        $update = $offer->update($data);
+        ProductOffer::query()
+            ->where('offer_id', $offer->id)
+            ->delete();
+        foreach ($products as $product) {
+//            dd($product);
+            ProductOffer::create($product);
+        }
+
         if ($update)
             return redirect()->route('admin.offer.index')->with('success', 'Teklif başarıyla güncellendi.');
         else
@@ -134,7 +159,7 @@ class OfferController extends Controller
         $customer = Customer::where('personal_type', $data['offer_type'])->get();
 
         if (!$customer) {
-            return response()->json(['status' => false,'message' => 'Customer not found'], 404);
+            return response()->json(['status' => false, 'message' => 'Customer not found'], 404);
         }
         return response()->json($customer);
     }
@@ -147,12 +172,14 @@ class OfferController extends Controller
         $data = $request->validate([
             'product_tag' => ['required', 'exists:product_tags,id']
         ]);
-        $products = Product::where('product_tag_id', $data['product_tag'])
-                    ->with(['category' ,'productTag'])
-                    ->get();
 
+        $products = Product::query()
+            ->where('product_tag_id', $data['product_tag'])
+            ->with(['category', 'productTag', 'currency'])
+            ->get();
+//        dd($products[0]->type[0]);
         if (!$products) {
-            return response()->json(['status' => false,'message' => 'Product not found'], 404);
+            return response()->json(['status' => false, 'message' => 'Product not found'], 404);
         }
         return response()->json($products);
     }

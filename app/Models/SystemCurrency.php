@@ -15,4 +15,9 @@ class SystemCurrency extends Model
         'symbol',
         'main',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -76,16 +76,24 @@
                             </div>
                         </div>
                         <div class="row mt-5 productTable" >
+                            <div class="col-md-2 mb-4">
+                                <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Ürün Adına Göre Ara">
+                            </div>
                             <table id="myTable" class="display" >
                                 <thead>
                                 <tr>
-                                    <th>ÜRÜN SEÇİM</th>
+                                    <th></th>
                                     <th>#</th>
+                                    <th>KATEGORİ</th>
                                     <th>ÜRÜN ADI</th>
-                                    <th>ÜRÜN KATEGORİ</th>
-                                    <th>ÜRÜN ETİKET</th>
-                                    <th>ÜRÜN KODU</th>
+                                    <th>ÜRÜN EBADI</th>
+                                    <th>TİP</th>
+                                    <th>ÜRÜN MALZEME</th>
+                                    <th>ÜRÜN RENGİ</th>
+                                    <th>ÜRÜN DETAY</th>
                                     <th>FİYAT</th>
+                                    <th>PARA BİRİMİ</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -93,11 +101,23 @@
                                         <tr>
                                             <td><button type="button" class="btn btn-success btn-sm productSelect">+</button></td>
                                             <td>{{ $product->id }}</td>
-                                            <td>{{ $product->name }}</td>
                                             <td>{{ $product->category->name }}</td>
-                                            <td>{{ $product->productTag->name }}</td>
-                                            <td>{{ $product->code }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->product_size }}</td>
+                                            <td>
+                                                @foreach($product->type as $type)
+                                                    {{ $type }}
+                                                    @if(!$loop->last), @endif
+                                                @endforeach
+                                            </td>
+                                            <td>{{ $product->material }}</td>
+                                            <td>{{ $product->color }}</td>
+                                            <td>{{ $product->detail }}</td>
                                             <td>{{ $product->price }}</td>
+                                            <td>{{ $product->currency->symbol }}</td>
+                                            <td>
+                                                <input type="hidden" name="product_tag_id" value="{{ $product->product_tag_id }}">
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -110,25 +130,44 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>KATEGORİ</th>
                                         <th>ÜRÜN ADI</th>
-                                        <th>ÜRÜN KATEGORİ</th>
-                                        <th>ÜRÜN ETİKET</th>
-                                        <th>ÜRÜN KODU</th>
-                                        <th>ÜRÜN ADET</th>
+                                        <th>ÜRÜN EBADI</th>
+                                        <th>TİP</th>
+                                        <th>ÜRÜN MALZEME</th>
+                                        <th>ÜRÜN RENGİ</th>
+                                        <th>ÜRÜN DETAY</th>
+                                        <th>ADET</th>
                                         <th>FİYAT</th>
+                                        <th>PARA BİRİMİ</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody >
-                                        @foreach($offer->products as $offerProduct)
+                                        @foreach($offer->productOffers as $offerProduct)
                                             <tr>
-                                                <td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['id'] }}"</td>
+                                                {{--<td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['id'] }}"</td>
                                                 <td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['name'] }}"</td>
                                                 <td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['category'] }}"</td>
                                                 <td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['product_tag'] }}"</td>
                                                 <td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="{{ $offerProduct['code'] }}"</td>
                                                 <td><input type="text" name="products[quantity][]" class="form-control form-select-sm quantity" value="{{ $offerProduct['quantity'] ?? 0 }}"</td>
                                                 <td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="{{ $offerProduct['price'] }}"</td>
-                                                <td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>
+                                                <td><a type="button" class="btn btn-danger btn-sm removeProduct" >- </a></td>--}}
+
+                                                <td><input type="text" name="products[product_id][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->product_id }}"></td>
+                                                <td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->category }}"></td>
+                                                <td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm readonly" value="{{ $offerProduct->name }}"></td>
+                                                <td><input type="text" name="products[product_size][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->product_size }}"></td>
+                                                <td><input type="text" name="products[type][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->type }}"></td>
+                                                <td><input type="text" name="products[material][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->material }}"></td>
+                                                <td><input type="text" name="products[color][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->color }}"></td>
+                                                <td><input type="text" name="products[detail][]" class="form-control-plaintext form-select-sm" readonly value="{{ $offerProduct->detail }}"></td>
+                                                <td><input type="text" name="products[quantity][]" class="form-control form-select-sm quantity" value="{{ $offerProduct->quantity }}"></td>
+                                                <td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="{{ $offerProduct->price }}"></td>
+                                                <td><input type="text" name="products[currency][]" class="form-control-plaintext form-select-sm " readonly value="{{ $offerProduct->currency }}"></td>
+                                                <td><input type="hidden" name="products[product_tag_id][]" class="form-control-plaintext form-select-sm " readonly value="{{ $offer->product_tag_id }}"></td>
+                                                <td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</a></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -289,15 +328,21 @@
                         $('.productTable').css('visibility', 'visible');
                         $('#myTable tbody').empty();
                         $.each(response, function (key, value) {
+                            console.log(value)
                             $('#myTable tbody').append('<tr class="product">' +
                                 //'<td><input type="checkbox" class="form-check productSelect" name="product_select"></td>' +
                                 '<td><button type="button" class="btn btn-success btn-sm productSelect">+</button></td>' +
                                 '<td>'+value.id+'</td>' +
-                                '<td>'+value.name+'</td>' +
                                 '<td>'+value.category.name+'</td>' +
-                                '<td>'+value.product_tag.name+'</td>' +
-                                '<td>'+value.code+'</td>' +
+                                '<td>'+value.name+'</td>' +
+                                '<td>'+value.product_size+'</td>' +
+                                '<td>'+ value.type +'</td>' +
+                                '<td>'+value.material+'</td>' +
+                                '<td>'+value.color+'</td>' +
+                                '<td>'+value.detail+'</td>' +
                                 '<td>'+value.price+'</td>' +
+                                '<td>'+value.currency.symbol+'</td>' +
+                                '<td style="visibility: hidden">'+value.product_tag_id+'</td>' +
                                 '</tr>');
                         })
                     },
@@ -313,20 +358,31 @@
         $('#myTable tbody').on('click', '.productSelect', function (){
 
             let id = $(this).closest('tr').find('td:eq(1)').text();
-            let name = $(this).closest('tr').find('td:eq(2)').text();
-            let category = $(this).closest('tr').find('td:eq(3)').text();
-            let product_tag = $(this).closest('tr').find('td:eq(4)').text();
-            let code = $(this).closest('tr').find('td:eq(5)').text();
-            let price = $(this).closest('tr').find('td:eq(6)').text();
+            let category = $(this).closest('tr').find('td:eq(2)').text();
+            let name = $(this).closest('tr').find('td:eq(3)').text();
+            let product_size = $(this).closest('tr').find('td:eq(4)').text();
+            let type = $(this).closest('tr').find('td:eq(5)').text().trim();
+            let material = $(this).closest('tr').find('td:eq(6)').text().trim();
+            console.log('test',material)
+            let color = $(this).closest('tr').find('td:eq(7)').text();
+            let detail = $(this).closest('tr').find('td:eq(8)').text();
+            let price = $(this).closest('tr').find('td:eq(9)').text();
+            let currency_id = $(this).closest('tr').find('td:eq(10)').text();
+            let product_tag_id = $(this).closest('tr').find('td:eq(11)').text();
             let total = 0;
             $('.productSelects tbody').append('<tr class="productSelectsBody">' +
-                '<td><input type="text" name="products[id][]" class="form-control-plaintext form-select-sm" value="'+id+'"</td>' +
-                '<td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm" value="'+name+'"</td>' +
-                '<td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" value="'+category+'"</td>' +
-                '<td><input type="text" name="products[product_tag][]" class="form-control-plaintext form-select-sm" value="'+product_tag+'"</td>' +
-                '<td><input type="text" name="products[code][]" class="form-control-plaintext form-select-sm" value="'+code+'"</td>' +
+                '<td><input type="text" name="products[product_id][]" class="form-control-plaintext form-select-sm" readonly value="'+id+'"</td>' +
+                '<td><input type="text" name="products[category][]" class="form-control-plaintext form-select-sm" readonly value="'+category+'"</td>' +
+                '<td><input type="text" name="products[name][]" class="form-control-plaintext form-select-sm readonly" value="'+name+'"</td>' +
+                '<td><input type="text" name="products[product_size][]" class="form-control-plaintext form-select-sm" readonly value="'+product_size+'"</td>' +
+                '<td><input type="text" name="products[type][]" class="form-control-plaintext form-select-sm" readonly value="'+type+'"</td>' +
+                '<td><input type="text" name="products[material][]" class="form-control-plaintext form-select-sm" readonly value="'+material+'"</td>' +
+                '<td><input type="text" name="products[color][]" class="form-control-plaintext form-select-sm" readonly value="'+color+'"</td>' +
+                '<td><input type="text" name="products[detail][]" class="form-control-plaintext form-select-sm" readonly value="'+detail+'"</td>' +
                 '<td><input type="text" name="products[quantity][]" class="form-control form-select-sm quantity" value="'+ 1 +'"</td>' +
                 '<td><input type="text" name="products[price][]" class="form-control form-select-sm prices" value="'+price+'"</td>' +
+                '<td><input type="text" name="products[currency][]" class="form-control-plaintext form-select-sm " readonly value="'+currency_id+'"</td>' +
+                '<td><input type="hidden" name="products[product_tag_id][]" class="form-control-plaintext form-select-sm " readonly value="'+product_tag_id+'"</td>' +
                 '<td><a type="button" class="btn btn-danger btn-sm removeProduct" >-</td>' +
                 '</tr>');
             $('.productSelects tbody tr').each(function (){
@@ -441,6 +497,30 @@
                 filebrowserUploadUrl: "{{route('admin.upload', ['_token' => csrf_token() ])}}",
                 filebrowserUploadMethod: 'form'
             });
+        }
+    </script>
+
+    <script>
+        function myFunction() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
         }
     </script>
 @endsection
