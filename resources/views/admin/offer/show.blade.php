@@ -84,91 +84,70 @@
                 <div class="card-header py-2 bg-light">
                     <div class="row row-cols-1 row-cols-lg-3">
                         <div class="col">
-
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <img src="{{ asset('images/bluverde-logo.png') }}" alt=""  style="margin-top: -50px; margin-left: -25px;" class="fluid">
-                                </div>
-                                <div class="col-md-9">
-                                    <small>
-                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                            From
-                                        @else
-                                            Teklif Yapan
-                                        @endif
-                                    </small>
-                                    <address class="m-t-5 m-b-5">
-                                        <strong class="text-inverse">
-                                            @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                                B V TEXTILE LIMITED COMPANY
-                                            @else
-                                                B V TEKSTİL LİMİTED ŞİRKETİ
-                                            @endif
-                                        </strong><br>@if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-
-                                            Ortabayır District <br> Şair Çelebi Street Number:1/3 <br>
-                                            34413 Kagithane/Istanbul/Turkey
-                                        @else
-                                            Ortabayır Mahallesi <br> Şair Çelebi Sokak No:1/3 <br>
-                                            34413 Kağıthane/İstanbul/Türkiye
-                                        @endif
-
-                                        <br>
-                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                            Phone
-                                        @else
-                                            Telefon
-                                        @endif
-                                        : +90(533)-244-9428<br>
-                                        Email: info@blu-verde.com
-                                    </address>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col">
                             <div class="">
                                 <small>
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        To
+                                        From
                                     @else
-                                        Teklif Yapılan
+                                        Teklif Yapan
                                     @endif
                                 </small>
                                 <address class="m-t-5 m-b-5">
-                                    <strong class="text-inverse">{{ $offer->customer->name }}</strong><br>
-                                    @foreach( $offer->customer->address as $address)
-                                        {{ $address }}<br>
-                                    @endforeach
-                                    {{ $offer->customer->post_code }}
-                                    {{ $offer->customer->district }}/{{ $offer->customer->province }}/{{ $offer->customer->country }}
+                                    <strong class="text-inverse">
+                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                            B V TEXTILE LIMITED COMPANY
+                                        @else
+                                            B V TEKSTİL LİMİTED ŞİRKETİ
+                                        @endif
+                                    </strong><br>@if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+
+                                        Ortabayır District <br> Şair Çelebi Street Number:1/3 <br>
+                                        34413 Kagithane/Istanbul/Turkey
+                                    @else
+                                        Ortabayır Mahallesi <br> Şair Çelebi Sokak No:1/3 <br>
+                                        34413 Kağıthane/İstanbul/Türkiye
+                                    @endif
+
                                     <br>
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
                                         Phone
                                     @else
                                         Telefon
-                                    @endif : {{ $offer->customer->phone }}<br>
-                                    Email: {{ $offer->customer->email }}
+                                    @endif
+                                    : +90(533)-244-9428<br>
+                                    Email: info@blu-verde.com
                                 </address>
                             </div>
                         </div>
                         <div class="col">
                             <div class="">
-                                <small>
-                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        Order Date
-                                    @else
-                                        Teklif Tarihi
-                                    @endif
-                                </small>
-                                <div class=""><b>
-                                        {{
-                                            \Carbon\Carbon::parse($offer->created_at)->format('d/m/Y')
-                                        }}
-                                    </b></div>
-                                <div class="invoice-detail">
-                                    #{{ $offer->id }}<br>
+
+                            </div>
+                        </div>
+                        <div class="col">
+
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <small>
+                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                            Order Date
+                                        @else
+                                            Teklif Tarihi
+                                        @endif
+                                    </small>
+                                    <div class=""><b>
+                                            {{
+                                                \Carbon\Carbon::parse($offer->created_at)->format('d/m/Y')
+                                            }}
+                                        </b></div>
+                                    <div class="invoice-detail">
+                                        #{{ $offer->id }}<br>
+                                    </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <img src="{{ asset('images/bluverde-logo.png') }}" alt=""  style="margin-top: -50px; margin-left: -25px;" class="fluid">
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -180,108 +159,179 @@
                             <tr>
                                 <th>
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        Product Name
+                                        Product
                                     @else
-                                        Ürün Adı
+                                        Ürün
+                                    @endif
+                                </th>
+                                <th>
+                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                        Size
+                                    @else
+                                        Ebat
+                                    @endif
+                                </th>
+                                <th>
+                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                        Features
+                                    @else
+                                        Özellikler
                                     @endif
                                 </th>
                                 <th class="text-center" width="10%">
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        Product Category
+                                        Quantity
                                     @else
-                                        Ürün Kategorisi
-                                    @endif
-                                </th>
-                                <th class="text-center" width="10%">
-                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        Product Code
-                                    @else
-                                        Ürün Kodu
-                                    @endif
-                                </th>
-                                <th class="text-center" width="10%">
-                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        Product Quantity
-                                    @else
-                                        Ürün Adet
+                                        Adet
                                     @endif
                                 </th>
                                 <th class="text-right" width="20%">
                                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                        Product Price
+                                        Unit Price
                                     @else
-                                        Ürün Fiyatı
+                                        Birim Fiyat
+                                    @endif
+                                </th>
+                                <th class="text-right" width="20%">
+                                    @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                        Total
+                                    @else
+                                        Toplam
                                     @endif
                                 </th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($offer->products as $product)
+                                @php
+                                 $p = \App\Models\Product::find($product['id']);
+//                                 dd($p->system_currency_id);
+                                 $currency = \App\Models\SystemCurrency::find($p->system_currency_id);
+                                $symbol = $currency->symbol;
+                                @endphp
                                 <tr>
                                     <td>
                                         <span class="text-inverse">{{ $product['name'] }}</span><br>
                                     </td>
-                                    <td class="text-center">{{ $product['category'] }}</td>
-                                    <td class="text-center">{{ $product['code'] }}</td>
+                                    <td>
+                                        <span class="text-inverse">{{ $p->product_size }}</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="text-inverse">{{ $p->material }}</span>
+                                        <span class="text-inverse">{{ $p->color }}</span>
+
+                                        <span class="text-inverse">
+                                            @if(!is_null($p->type))
+                                            @forelse($p->type as $type)
+                                                {{ $type }}
+                                                @if(!$loop->last) , @endif
+                                            @empty
+
+                                            @endforelse
+                                            @endif
+                                        </span><br>
+                                    </td>
                                     <td style="text-align: center">{{ $product['quantity'] }}</td>
                                     <td class="text-right">{{ $product['price'] }}</td>
+                                    <td class="text-right">{{ $product['quantity'] * $product['price'].' '. $symbol }} </td>
                                 </tr>
                             @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr class="table-active">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="col-1 text-right">
+                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                            Products Total
+                                        @else
+                                            Ürünler Toplamı
+                                        @endif
+                                    </td>
+                                    <td class="col-1 text-right">
+                                        @php
+                                            $total = 0;
+                                            foreach ($offer->products as $product){
+                                                $total += $product['quantity'] * $product['price'];
+                                            }
+                                        @endphp
+                                        {{ $total }} {{ $symbol }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="col-1 text-right">
+                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                             %{{ $offer->tax }} Tax
+                                        @else
+                                             %{{ $offer->tax }} KDV
+                                        @endif
+                                    </td>
+                                    <td class="col-1 text-right">
+                                        @php
+                                            $total = 0;
+                                            foreach ($offer->products as $product){
+                                                $total += $product['quantity'] * $product['price'];
+                                            }
+                                        @endphp
+                                        {{ $total * $offer->tax / 100 }} {{ $symbol }}
+                                    </td>
+                                </tr>
+                                @if(isset($offer->discount))
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="col-1 text-right">
+                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                             %{{ $offer->discount }} Discount
+                                        @else
+                                             %{{ $offer->discount }} İskonto
+                                        @endif
+                                    </td>
+                                    <td class="col-1 text-right">
+                                        @php
+                                            $total = 0;
+                                            foreach ($offer->products as $product){
+                                                $total += $product['quantity'] * $product['price'];
+                                            }
+                                        @endphp
+                                        {{ $total * $offer->discount / 100 }} {{ $symbol }}
+                                    </td>
+                                </tr>
+                                @endif
+                                <tr class="table-active">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="col-1 text-right">
+                                        @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
+                                            Total
+                                        @else
+                                            Toplam
+                                        @endif
+                                    </td>
+                                    <td class="col-1 text-right">
+                                        @php
+                                            $total = 0;
+                                            foreach ($offer->products as $product){
+                                                $total += $product['quantity'] * $product['price'];
+                                            }
+                                        @endphp
+                                        {{ $total + ($total * $offer->tax / 100) - ($total * $offer->discount / 100) }} {{ $symbol }}
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
-
-                    <div class="row bg-light align-items-center m-0">
-                        <div class="col col-auto p-4">
-                            <p class="mb-0">
-                                @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                    Subtotal
-                                @else
-                                    Ara Toplam
-                                @endif
-                            </p>
-                            <h4 class="mb-0">{{ $offer->total }}</h4>
-                        </div>
-                        <div class="col col-auto p-4">
-                            <i class="bi bi-plus-lg text-muted"></i>
-                        </div>
-                        <div class="col col-auto p-4">
-                            <p class="mb-0">
-                                @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                    Discount
-                                @else
-                                    İskonto
-                                @endif
-                            </p>
-                            <h4 class="mb-0">%{{ $offer->discount }}</h4>
-                        </div>
-                        <div class="col col-auto p-4">
-                            <i class="bi bi-plus-lg text-muted"></i>
-                        </div>
-                        <div class="col col-auto me-auto p-4">
-                            <p class="mb-0">
-                                @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                    Tax
-                                @else
-                                    KDV
-                                @endif
-                            </p>
-                            <h4 class="mb-0">%{{ $offer->tax }}</h4>
-                        </div>
-                        <div class="col bg-dark col-auto p-4">
-                            <p class="mb-0 text-white">
-                                @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                                    Total
-                                @else
-                                    Toplam
-                                @endif
-                            </p>
-                            <h4 class="mb-0 text-white">
-                                {{ $offer->total + ($offer->total * $offer->tax / 100) - ($offer->total * $offer->discount / 100) }}
-                            </h4>
-                        </div>
-
-                    </div><!--end row-->
+<!--end row-->
 
                     <hr>
                     <!-- begin invoice-note -->
@@ -292,19 +342,28 @@
                 </div>
             </div>
             <div class="card-footer py-3">
+
                 <p class="text-center mb-2">
                     @if($offer->offer_type == \App\Enum\Offer\OfferTypeEnum::INTERNATIONAL)
-                        THANK YOU FOR CHOOSING US
+                        BV TEKSTİL TİCARET LTD ŞTİ
+                        <br>
+                        Orta Bayır Mahallesi Şair Çelebi Sokak No 1/3 Kağıthane İstanbul
+                        <br>
+                        V D : ZİNCİRLİKUYU           V NO : 19 50 84 66 05
                     @else
-                        BİZİ TERCİH ETTİĞİNİZ İÇİN TEŞEKKÜR EDERİZ
+                        BV TEKSTİL TİCARET LTD ŞTİ
+                        <br>
+                        Orta Bayır Mahallesi Şair Çelebi Sokak No 1/3 Kağıthane İstanbul
+                        <br>
+                        V.D : ZİNCİRLİKUYU  &nbsp &nbsp &nbsp         V.NO : 19 50 84 66 05
                     @endif
 
                 </p>
-                {{--  <p class="text-center d-flex align-items-center gap-3 justify-content-center mb-0">
-                      <span class=""><i class="bi bi-globe"></i> www.domain.com</span>
-                      <span class=""><i class="bi bi-telephone-fill"></i> T:+11-0462879</span>
-                      <span class=""><i class="bi bi-envelope-fill"></i> info@example.com</span>
-                  </p>--}}
+                  <p class="text-center d-flex align-items-center gap-3 justify-content-center mb-0">
+                      <span class=""><i class="bi bi-globe"></i> www.blu-verde.com</span>
+                      <span class=""><i class="bi bi-telephone-fill"></i> T:+90(533)-244-9428</span>
+                      <span class=""><i class="bi bi-envelope-fill"></i> info@blu-verde.com</span>
+                  </p>
             </div>
         </div>
 

@@ -49,4 +49,9 @@ class Product extends Model
         return $this->hasMany(MediaProducts::class);
     }
 
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(SystemCurrency::class);
+    }
+
 }

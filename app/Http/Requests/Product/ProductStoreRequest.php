@@ -28,7 +28,7 @@ class ProductStoreRequest extends FormRequest
             'code' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'images' => 'nullable|array|max:5',
             'meta_description' => 'nullable|string|max:160',
             'meta_keywords' => 'nullable|string|max:160',
