@@ -458,7 +458,22 @@
 
             // Loop through all table rows, and hide those who don't match the search query
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[3];
+
+                let leng = tr[i].getElementsByTagName("td").length
+                for(let j = 0; j < leng; j++){
+                    td = tr[i].getElementsByTagName("td")[j];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+                /*td = tr[i].getElementsByTagName("td")[3];
+
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -466,7 +481,7 @@
                     } else {
                         tr[i].style.display = "none";
                     }
-                }
+                }*/
             }
         }
     </script>
