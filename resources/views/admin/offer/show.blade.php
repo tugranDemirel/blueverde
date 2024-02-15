@@ -2,60 +2,20 @@
 <html lang="tr" class="light-theme">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tuğran Demirel">
-    <link rel="icon" href="{{ asset('assets/admin/images/favicon-32x32.png') }}" type="image/png"/>
-    <!--plugins-->
-    <link href="{{ asset('assets/admin/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"/>
-    <!-- Bootstrap CSS -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="{{ asset('assets/admin/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/css/bootstrap-extended.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/css/style.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/css/icons.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-    <!-- loader-->
-    <link href="{{ asset('assets/admin/css/pace.min.css') }}" rel="stylesheet"/>
-
-    <!--Theme Styles-->
-    <link href="{{ asset('assets/admin/css/dark-theme.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/css/light-theme.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/css/semi-dark.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/admin/css/header-colors.css') }}" rel="stylesheet"/>
 </head>
 
 <body>
 
 
-<!--start wrapper-->
 <div class="wrapper">
-    <!--start top header-->
-    <!--end top header-->
 
-    <!--start sidebar -->
-    <!--start content-->
     <main class="" style="margin: 50px;">
-        <!--breadcrumb-->
-        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Teklifler</div>
-            <div class="ps-3">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">Teklif Detay</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-        <!--end breadcrumb-->
+
 
 
         <div class="card border shadow-none">
@@ -69,13 +29,6 @@
                                 B V TEKSTİL LİMİTED ŞİRKETİ
                             @endif
                         </h5>
-                    </div>
-                    <div class="col-12 col-lg-6 text-md-end">
-                        {{--                        <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> PDF</a>--}}
-                        <a href="javascript:;"
-                           onclick="document.getElementById('print').style.visibility = 'hidden'; window.print(); document.getElementById('print').style.visibility = 'visible'; "
-                           id="print" class="btn btn-sm btn-secondary"><i class="bi bi-printer-fill"></i> Yazdır ya da
-                            Kaydet</a>
                     </div>
                 </div>
             </div>
@@ -134,7 +87,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <img src="{{ asset('images/bluverde-logo.png') }}" alt=""  style="margin-top: -50px; margin-left: -25px;" class="fluid">
+                                    <img src="{{ asset('images/bluverde-logo.png') }}" alt=""  style="margin-top: -50px; margin-left: -35px;" class="fluid">
                                 </div>
 
                             </div>
@@ -316,14 +269,11 @@
                             </tfoot>
                         </table>
                     </div>
-<!--end row-->
 
                     <hr>
-                    <!-- begin invoice-note -->
                     <div class="my-3">
                         {!! $offer->term_of_offer !!}
                     </div>
-                    <!-- end invoice-note -->
                 </div>
             </div>
             <div class="card-footer py-3">
@@ -353,27 +303,15 @@
         </div>
 
     </main>
-    <!--end page main-->
 
-    <!--end switcher-->
 
 </div>
-<!--end wrapper-->
 
-
-<!-- Bootstrap bundle JS -->
-<script src="{{ asset('assets/admin/js/bootstrap.bundle.min.js') }}"></script>
-<!--plugins-->
-<script src="{{ asset('assets/admin/js/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/simplebar/js/simplebar.min.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/metismenu/js/metisMenu.min.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/easyPieChart/jquery.easypiechart.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/peity/jquery.peity.min.js') }}"></script>
-<script src="{{ asset('assets/admin/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
-<script src="{{ asset('assets/admin/js/pace.min.js') }}"></script>
-<!--app-->
-<script src="{{ asset('assets/admin/js/app.js') }}"></script>
-<script src="{{ asset('assets/admin/js/index.js') }}"></script>
 
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+       window.print()
+    });z
+</script>
 </html>

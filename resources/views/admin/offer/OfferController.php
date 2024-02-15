@@ -12,8 +12,6 @@ use App\Models\ProductOffer;
 use App\Models\ProductTag;
 use App\Models\SystemDeliveryMethod;
 use App\Models\SystemTermOfOffer;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Dompdf\Dompdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
@@ -79,24 +77,8 @@ class OfferController extends Controller
 
     public function show(Offer $offer)
     {
-        /** @var Offer $offer  */
-        $offer = Offer::query()
-            ->where('id', $offer->id)
-            ->with(['customer', 'delivery', 'productTag', 'productOffers'])
-            ->firstOrFail();
-
-        $fileName = 'offer-' . $offer->id . '.pdf';
-        $data = [
-            'offer' => $offer
-        ];
-
-       return view('admin.offer.pdf', compact('offer'));
-        /** @var Dompdf $pdf */
-    /*    $pdf = Pdf::loadView('admin.offer.pdf',['data' => $data]);
-//        $pdf->setBasePath(public_path('assets/css/'));
-        $pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif', 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, 'max_execution_time' => 300]);
-
-        return $pdf->download('test.pdf');*/
+        $offer->load(['customer', 'delivery', 'productTag', 'productOffers']);
+        return view('admin.offer.show', compact('offer'));
     }
 
     /**
