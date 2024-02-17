@@ -6,6 +6,7 @@ use App\Helpers\ImageHelpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
+use App\Imports\Product\AddProductExcel;
 use App\Models\Category;
 use App\Models\CategoryTag;
 use App\Models\MediaProducts;
@@ -13,6 +14,7 @@ use App\Models\Product;
 use App\Models\ProductTag;
 use App\Models\SystemCurrency;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -168,5 +170,13 @@ class ProductController extends Controller
         }
         else
             return response()->json(['success' => false, 'message' => 'Resim silinirken bir hata oluştu.'], 401);
+    }
+
+    public function importExcel(Request $request)
+    {
+        $file = $request->file('file');
+
+        Excel::import(new AddProductExcel, $file);
+        return redirect()->back();
     }
 }

@@ -19,6 +19,39 @@
         <div class="ms-auto">
             <div class="btn-group">
                 <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Ürün Ekle</a>
+                <!-- Grids in modals -->
+                <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#exampleModalgrid">
+                    <i class="bi bi-cloud-upload"></i>
+                </button>
+                <div class="modal fade" id="exampleModalgrid" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalgridLabel">Ürün Yükle</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('admin.product.importExcel') }}" enctype="multipart/form-data" method="POST">
+                                    @csrf
+                                    <div class="row g-3">
+                                        <div class="col-xxl-12">
+                                            <div>
+                                                <label for="importExcel" class="form-label">Excel Dosyası</label>
+                                                <input type="file" class="form-control" name="file" id="importExcel">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal Et</button>
+                                                <button type="submit" class="btn btn-primary">Kaydet</button>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

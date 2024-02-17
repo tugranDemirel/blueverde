@@ -78,10 +78,12 @@ Route::middleware('auth')->as('admin.')->prefix('panel')->group(function (){
         ->parameters(['urun-etiketleri' => 'productTag']);
 
     Route::post('delete-single-image', [ProductController::class, 'deleteSingleImage'])->name('product.deleteImage');
+    Route::post('importExcelFile', [ProductController::class, 'importExcel'])->name('product.importExcel');
     Route::resource('urunler', ProductController::class)
         ->except(['show'])
         ->names('product')
         ->parameters(['urunler' => 'product']);
+
     Route::resource('sistem-ayarlari/para-birimi', CurrencyController::class)
         ->except(['show'])
         ->names('currency')
